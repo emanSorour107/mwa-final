@@ -32,3 +32,4 @@ MWA course CS-573-2020-Group3
 3. **Discussion:**
 * UI using material or bootstrap -> using bootstrap
 * Git branch, push rule and other convention agreements
+  4. Others:
