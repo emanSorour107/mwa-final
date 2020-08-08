@@ -1,0 +1,23 @@
+###
+GET http://localhost:3000/customers
+
+###
+POST http://localhost:3000/customers
+Content-Type: application/json
+
+{
+    "firstName": "Tien Khanh",
+    "lastName": "Nguyen",
+    "email": "tienkhanhnguyen@khanh.com",
+    "password": "iamsohandsome"
+}
+
+###
+GET http://localhost:3000/farmers
+
+###
+GET http://localhost:3000/orders
+
+###
+GET http://localhost:3000/products
+
