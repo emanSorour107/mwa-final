@@ -30,5 +30,5 @@ MWA course CS-573-2020-Group3
     1. **_For super users (optional)_**
       * List account, activate/deactivate, reset pass
 3. **Discussion:**
-* UI using material or bootstrap
+* UI using material or bootstrap -> using bootstrap
 * Git branch, push rule and other convention agreements
