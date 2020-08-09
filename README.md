@@ -51,7 +51,7 @@ Farmer = {
 
 Product = {
     _id: Object,
-    _farmerId: Object,
+    farmer: Ref,
     name: String,
     description: String,
     price: Double,
@@ -62,8 +62,8 @@ Product = {
 
 Order = {
     _id: Object,
-    _customerId: Object,
-    _farmerId: Object,
+    customer: Ref,
+    farmer: Ref,
     orderCode: String,
     createdate: Date,
     productList: [Product],
