@@ -18,6 +18,8 @@ let OrderService = {
         return await getByQuery(query);
     },
 
+    getByQuery: getByQuery,
+
     getByFarmer : async (farmerId) => {
         return await getByQuery({farmer: farmerId});
     },
