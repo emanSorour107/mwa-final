@@ -1,10 +1,17 @@
-const Customer = require("../models/customer")
+const Customer = require("../models/customer");
+const OrderService = require("./orderService");
 
-let OrderService = {
+let CustomerService = {
     findAll : (query) => {
         Customer.find(query, (err, res) => res);
-    }
+    },
+
+
+    getOrders : async (customerId) => {
+        return await OrderService.getByCustomer(customerId);
+    },
+
 }
 
-module.exports = OrderService
+module.exports = CustomerService
 

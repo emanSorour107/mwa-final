@@ -2,38 +2,47 @@ const express = require('express');
 const router = express.Router();
 const OrderService = require('../services/orderService');
 
-router.get('/:orderCode', function (req, res, next) {
-  const { orderCode } = req.params
-  Order.find({ orderCode }, (err, orders) => {
+router.get('/:id', function (req, res, next) {
+  const { id } = req.params
+  OrderService.getById(id, (err, orders) => {
     res.json(orders)
   })
 });
 
 
-router.get('/:status', function (req, res, next) {
-  const { status='*' } = req.params
-  const query = status=='*'?{}:{status};
-  Order.find({ query }, (err, orders) => {
+router.get('/', function (req, res, next) {
+  const query = req.query;
+  OrderService.getByQuery(query, (err, orders) => {
     res.json(orders)
   })
 });
 
+// Create new order when check out
+router.post('/', async function(req, res, next) {
+  const { customerId, farmerId, productIds} = req.body;
 
-router.post('/', function(req, res, next) {
-  const { customerId, farmerId, productIds} = body;
-  OrderService.createOrder(customerId, farmerId, productIds).then(
-    (result) => res.json(result)
-  );
-  
+  let result = await OrderService.createOrder(customerId, farmerId, productIds);
+  res.json(result);
 
 });
 
 router.put('/:id', function(req, res, next) {
-  res.send('respond with a resource');
+  let data = req.query;
+  let {id} = req.params;
+
+  OrderService.update(id, data, (err, result)=>{
+    if (err)
+      next(err);
+
+    res.json(result);
+  })
+  
 });
 
 router.delete('/:id', function(req, res, next) {
-  res.send('respond with a resource');
+  let id = req.params.id;
+  OrderService.remove(id, ()=>{})
+  
 });
 
 module.exports = router;
