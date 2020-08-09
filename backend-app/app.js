@@ -20,8 +20,8 @@ dotevn.config() // Load environment configuration from .env file
 const app = express();
 
 // Database
-const mongoOptions = { server: { socketOptions: { keepAlive: 1 } } }
-mongoose.connect(process.env.DB_URL, mongoOptions)
+const mongoOptions = { server: { socketOptions: { keepAlive: 1 } }, useNewUrlParser: true }
+mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017', mongoOptions)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
