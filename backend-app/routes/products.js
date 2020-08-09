@@ -1,8 +1,13 @@
 const express = require('express');
+const ProductService = require('../services/productService');
 const router = express.Router();
 
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  let query = {}
+  ProductService.findAll({}, (err,result)=>{
+    res.json(result)
+  })
+  
 });
 
 module.exports = router;

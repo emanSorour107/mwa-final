@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Order = require('../models/order')
+const OrderService = require('../services/orderService');
 
 router.get('/:orderCode', function (req, res, next) {
   const { orderCode } = req.params
@@ -21,7 +21,7 @@ router.get('/:status', function (req, res, next) {
 
 router.post('/', function(req, res, next) {
   const { customerId, farmerId, productIds} = body;
-  Order.$$.createOrder(customerId, farmerId, productIds).then(
+  OrderService.createOrder(customerId, farmerId, productIds).then(
     (result) => res.json(result)
   );
   
