@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: 'farmers', loadChildren: () => import('./farmers/farmers.module').then(m => m.FarmersModule) },

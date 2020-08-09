@@ -1,0 +1,24 @@
+<div id="product-container">
+    <div class="d-flex flex-row flex-wrap mt-5 mb-5">
+        <div *ngFor="let prod of products" class="col-md-4 col-lg-4 pt-2 pb-2">
+            <div class="card shadow">
+                <img [src]="prod.photo" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <span class="badge badge-light text-danger p-2 price-text">{{prod.price}}</span>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <a class="text-decoration-none" [routerLink]="['products', prod._id]">
+                            <h5 class="card-title">{{prod.name}}</h5>
+                        </a>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <span class="btn btn-success order-btn shadow" (click)="addToCart(prod)">
+                            <i class="fa fa-shopping-cart mr-1"></i>Add to Cart
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
