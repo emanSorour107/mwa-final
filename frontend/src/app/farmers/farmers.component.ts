@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import FarmerService from '../services/farmer.service';
 
 @Component({
   selector: 'app-farmers',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FarmersComponent implements OnInit {
 
-  constructor() { }
+  constructor(private farmerService: FarmerService) { }
+
+  farmers: []
 
   ngOnInit(): void {
+    this.farmerService.getAllFarmers()
+    .subscribe((records) => this.farmers = records)
   }
 
 }
