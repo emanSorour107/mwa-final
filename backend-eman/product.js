@@ -1,48 +1,51 @@
 const express = require('express');
-const {
-    MongoClient
-} = require('mongodb');
+require('dotenv').config()
+const Product = require('./productModel')
+
 const {
     query
 } = require('express');
-const uri = "mongodb+srv://eman:eman123@cluster0.0jbff.mongodb.net/test?retryWrites=true&w=majority&useUnifiedTopology=true";
-const client = new MongoClient(uri);
 
-let db;
 const app = express();
 
 
+
 // middlewares
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+  
 app.use(express.json());
 app.use(express.urlencoded({
     extended: false
 }));
-app.use((req, res, next) => {
-    if (!db) {
-        client.connect(function (err) {
-            db = client.db('project');
-            req.db = db.collection('products');
-            next();
-        });
-    } else {
-        req.db = db.collection('products');
-        next();
-    }
-})
-
 
 //Add product
 app.post('/products/add', async (req, res) => {
-    await req.db.insertOne(req.body, (err, results) => res.json({
-        message: "product added",
-        data: req.body,
-    }))
+    const { name, description, price, photo, inStock } = req.body
+    let newProduct = await new Product({ name, description, price, photo, inStock }).save()
+    res.json({
+      msg: 'New product created',
+      data: newProduct
+    })
 });
 
 //Get all products
 app.get('/products/all-products', (req, res) => {
-    req.db.find({}).toArray((err, data) => res.json({
+    Product.find({} ,((err, data) => res.json({
         data: data
+    })))
+})
+
+
+//Get product by Id
+app.get('/products/:id', async (req, res) => {
+    const productId = req.params.id
+
+    const product = await Product.findOne({_id : productId}, (err, data) => res.json({
+        data : data
     }))
 })
 
@@ -50,21 +53,20 @@ app.get('/products/all-products', (req, res) => {
 app.put('/products/update/:id', async (req, res) => {
     const productId = req.params.id
 
-    var query = {
-        _id: productId
-    }
-    req.db.updateOne(query, {
-        $set: {
-            "name": req.body.name,
-            "description": req.body.description
-        }
-    })
-    res.json({
-        message: "Product updated",
-        data: req.body
-    });
-
-})
+    const product = await Product.findOne({_id : productId})
+     product.name = req.body.name
+     product.description = req.body.description
+     product.price = req.body.price
+     product.photo = req.body.photo
+     product.inStock = req.body.inStock
+     await product.save()
+     res.json({
+         message : "Product updated Successful"
+     })
+    
+}); 
+      
+    
 
 // Delete a product
 app.delete('/products/delete/:id', async (req, res) => {
@@ -73,13 +75,16 @@ app.delete('/products/delete/:id', async (req, res) => {
     var query = {
         _id: productId
     }
-    const productCount =  await req.db.countDocuments(query)
+    const productCount =  await Product.countDocuments(query)
 
     if(productCount  == 1){
-       req.db.deleteOne(query);
-       res.status(200).json({
-        message: 'Product Deleted'
-     });
+    console.log(productCount)
+       Product.deleteOne(query).then(function(){ 
+        console.log("Data deleted");  
+        res.send({message : "Product is deleted"})
+    }).catch(function(error){ 
+        console.log(error);  
+    }); 
      }
      else{
          res.status(400).json({
