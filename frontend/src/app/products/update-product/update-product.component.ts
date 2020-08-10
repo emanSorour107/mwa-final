@@ -15,42 +15,52 @@ import { ProductsService } from '../products.service';
 })
 export class UpdateProductComponent implements OnInit {
 
-  updateForm : FormGroup;
+  updateForm: FormGroup;
+  id;
+  product;
 
-  constructor(private productService : ProductsService, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
+  constructor(private productService: ProductsService, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
 
     this.updateForm = formBuilder.group({
       name: ['', [Validators.required]],
       description: [''],
       price: [''],
       photo: [''],
-      inStock : ['']
+      inStock: ['']
     })
 
-    }
-    onSubmit() : void{
+    this.route.paramMap.subscribe((pMap) => {
+      this.id = pMap['params']['id'];
+    });
+
+    // this.updateForm.patchValue({
+    //   name: this.product.name,
+    //   description: this.product.description
+    // })
+
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  onSubmit(): void {
     var name = this.updateForm.getRawValue().name
     var description = this.updateForm.getRawValue().description
     var price = this.updateForm.getRawValue().price
-    var photo= this.updateForm.getRawValue().photo
-    var inStock =this.updateForm.getRawValue().inStock 
-    var product = {name :name, description: description, price: price, photo : photo, inStock : inStock}
-    // , { params: { id: '5f30450e0dac253790ba1d3b' } }
-    this.http.post<{idToken: string}>('http://localhost:3001/products/update/5f30450e0dac253790ba1d3b', product ).subscribe((res)=>
+    var photo = this.updateForm.getRawValue().photo
+    var inStock = this.updateForm.getRawValue().inStock
+    var product = { name: name, description: description, price: price, photo: photo, inStock: inStock }
+    console.log(product)
+    this.http.put(`http://localhost:3000/products/${this.id}`, product).subscribe((res) =>
       console.log("ok"))
-    }  
-    ngOnInit():void{
-      this.route.params.subscribe((param) => {
-        const id = param.get('id');
-         console.log(param['id']
-         )
-        }); 
-    }
+  }
 
-    getProduct(id : object){
-     this.productService.getProductById(id).subscribe(
-       
-     )
-    }
+
+  getProduct(id: object) {
+    this.product = this.productService.getProductById(id).subscribe(
+    )
+  }
+
 
 }
