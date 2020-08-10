@@ -19,10 +19,12 @@ router.get('/', function (req, res, next) {
 
 // Create new order when check out
 router.post('/', async function(req, res, next) {
-  const { customerId, farmerId, productIds} = req.body;
-
-  let result = await OrderService.createOrder(customerId, farmerId, productIds);
-  res.json(result);
+  const { customerId, farmerId, orderItems} = req.body;
+  let result = await OrderService.createOrder(customerId, farmerId, orderItems);
+  if (result.error)
+    return next(result)
+  
+   res.json(result);
 
 });
 

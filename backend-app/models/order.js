@@ -7,7 +7,8 @@ const orderSchema = Schema({
     farmer: {type: Schema.Types.ObjectId, ref: 'Farmer'},
     // orderCode: String,
     createDate: { type: Date, default: Date.now },
-    products: [{type: Schema.Types.ObjectId, ref: 'Product'}],
+    orderItems: [model('Product').schema],
+    // orderItems: {type: Schema.Types.ObjectId, ref: 'OrderItem'},
     status: String, //(PENDING || READY || COMPLETE)
     totalAmount: Number,
     pickUpTime: Date,
