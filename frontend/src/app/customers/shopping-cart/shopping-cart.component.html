@@ -24,21 +24,21 @@
                                 <div class="col-md-2 pl-0">
                                     <img class="product-image" [src]="item.photo" />
                                 </div>
-                                <div class="text-nowrap">
+                                <div>
                                     <h5>{{item.name}}</h5>
                                 </div>
                             </div>
                         </td>
-                        <td>{{item.price}}</td>
+                        <td>${{item.price}}</td>
                         <td>
                             <input type="number" class="form-control quantity-input shadow-none" max="10"
-                                [value]="item.quantity" 
-                                (keyup.enter)="updateItemQuantity(item._id, $event)"
+                                [value]="item.quantity" (keyup.enter)="updateItemQuantity(item._id, $event)"
                                 (blur)="updateItemQuantity(item._id, $event)">
                         </td>
-                        <td>{{item.price * item.quantity | number}}</td>
+                        <td>${{item.total | number}}</td>
                         <td>
-                            <span href="#" class="btn btn-danger btn-sm product-remove-btn" (click)="removeFromCart(item)">
+                            <span href="#" class="btn btn-danger btn-sm product-remove-btn"
+                                (click)="removeFromCart(item)">
                                 <i class="fa fa-remove"></i>
                             </span>
                         </td>
@@ -48,7 +48,7 @@
 
             <div class="text-right">
                 <span class="font-weight-bold">Grand Total: </span>
-                <span class="font-weight-bold">{{cart.total | number}}</span>
+                <span class="font-weight-bold">${{cart.total | number}}</span>
             </div>
 
             <div th:if="${cart_errors}" class="text-danger p-2">
@@ -60,13 +60,13 @@
             </div>
 
             <div class="text-right mt-5 mb-5">
-                <a th:href="@{/}" class="btn btn-primary shadow"> <span class="fa fa-home"></span> Continue shopping
-                </a>
-                <button type="submit" th:if="${cart.quantity}" th:formaction="@{/buyer/cart}"
-                    class="btn btn-secondary shadow">
+                <span class="btn btn-primary shadow mr-2" [routerLink]="['/farmers']">
+                    <i class="fa fa-home"></i> Continue shopping
+                </span>
+                <button type="submit" [disabled]="cart.items.length == 0" class="btn btn-secondary shadow mr-2">
                     <span class="fa fa-check"> Check Availability</span>
                 </button>
-                <button type="submit" th:if="${cart.quantity}" class="btn btn-success shadow">
+                <button type="submit" [disabled]="cart.items.length == 0" [routerLink]="['/customers','checkout']" class="btn btn-success shadow">
                     <span class="fa fa-check"> Check out</span>
                 </button>
             </div>

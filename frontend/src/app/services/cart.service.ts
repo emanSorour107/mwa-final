@@ -13,6 +13,28 @@ export default class CartService {
     this.loadCartItems()
   }
 
+  getCartData(items): Object {
+    if (!items || items.length == 0) {
+      return {
+        items: [],
+        total: 0
+      }
+    }
+
+    let grandTotal = 0
+    let results = items.map(item => {
+      let total = item['quantity'] * item['price']
+      item['total'] = total
+      grandTotal += total
+      return item
+    })
+    
+    return {
+      items: results,
+      total: grandTotal
+    }
+  }
+
   addItemToCart(product: any): void {
     const items = this.getCartFromStorage()
     const { _id, name, photo, price } = product

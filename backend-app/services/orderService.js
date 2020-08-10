@@ -29,17 +29,28 @@ let OrderService = {
         return await getByQuery(query);
     },
 
-    createOrder: async (cutomerId, farmerId, productIds) => {
-        const products = await Product.find({_id: productIds});
+    createOrder: async (customerId, address, products) => {
+        const productIds = products.map(prod => prod['_id'])
+        const orderItems = await Product.find({_id: productIds});
+        //TODO: Handle save Order
 
-        let totalAmount =products.map(p=>p.price).reduce((sum=0, cur)=>{
+        /**
+         * Order {
+         * 
+         *  [
+         *      OrderItem(productId, quantity)
+         *  ]
+         * }
+         */
+
+
+        let totalAmount = products.map(p=>p.price).reduce((sum=0, cur)=>{
             return sum + cur.price;
         })
-
         
         const order = new Order({
-            customer: cutomerId,
-            farmer: farmerId,
+            customer: customerId,
+            //farmer: farmerId,
             products,
             status: 'PENDING',
             totalAmount: totalAmount
