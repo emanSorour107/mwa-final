@@ -4,10 +4,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../products.service';
 
-
-
-
-
 @Component({
   selector: 'update-product',
   templateUrl: './update-product.component.html',
@@ -31,36 +27,35 @@ export class UpdateProductComponent implements OnInit {
 
     this.route.paramMap.subscribe((pMap) => {
       this.id = pMap['params']['id'];
+      this.getProduct()
     });
-
-    // this.updateForm.patchValue({
-    //   name: this.product.name,
-    //   description: this.product.description
-    // })
-
   }
 
   ngOnInit(): void {
-
   }
 
   onSubmit(): void {
-    var name = this.updateForm.getRawValue().name
-    var description = this.updateForm.getRawValue().description
-    var price = this.updateForm.getRawValue().price
-    var photo = this.updateForm.getRawValue().photo
-    var inStock = this.updateForm.getRawValue().inStock
-    var product = { name: name, description: description, price: price, photo: photo, inStock: inStock }
-    console.log(product)
-    this.http.put(`http://localhost:3000/products/${this.id}`, product).subscribe((res) =>
-      console.log("ok"))
+    const name = this.updateForm.getRawValue().name
+    const description = this.updateForm.getRawValue().description
+    const price = this.updateForm.getRawValue().price
+    const photo = this.updateForm.getRawValue().photo
+    const inStock = this.updateForm.getRawValue().inStock
+    const product = { name: name, description: description, price: price, photo: photo, inStock: inStock }
+    this.productService.updateProduct(this.id, product)
   }
 
-
-  getProduct(id: object) {
-    this.product = this.productService.getProductById(id).subscribe(
-    )
+  async getProduct() {
+    console.log('getting product ...')
+    this.productService.getProductById(this.id)
+    .subscribe((res) => {
+      console.log('patching product ...')
+      const product = res['data']
+      this.updateForm.patchValue({
+        name: product['name'], 
+        description: product['description'],
+        price : product['price'],
+        inStock :product['inStock']
+      })
+    })
   }
-
-
 }
