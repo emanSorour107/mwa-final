@@ -6,9 +6,10 @@ const productSchema = Schema({
     name: String,
     description: String,
     price: Number,
-    photoUrl: String,
+    photo: String,
     inStock: Number
 })
+
 
 const Product = model('Product', productSchema)
 module.exports = Product

@@ -39,7 +39,7 @@ MWA course CS-573-2020-Group3
 ```javascript
 Farmer = {
     _id: Object,
-    _userId: Object,
+    user: Object,
     firstName: String, 
     lastName: String,
     email: String,
@@ -75,7 +75,7 @@ Order = {
 
 Customer = {
     _id: Object,
-    _userId: Object,
+    user: Object,
     firstName: String, 
     lastName: String,
     email: String,
