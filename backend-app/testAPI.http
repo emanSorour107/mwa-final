@@ -32,6 +32,24 @@ Content-Type: application/json
 ### PRODUCTS
 GET http://localhost:3000/products
 
+###
+GET http://localhost:3000/products/5f317f83d18db035a489edb6
+###
+PUT http://localhost:3000/products/5f317f83d18db035a489edb6
+Content-Type: application/json
+
+{
+    "farmer": "5f30378415280f2cc0ca5818",
+    "name": "Fresh Corn 2",
+    "description": "2Picked at the Peak of Perfection: Our love for vegetables began over 100 years ago in Le Sueur, Minnesota",
+    "price": 0.50,
+    "photoUrl": "assets/product2.jpg", 
+    "inStock": 200
+}
+
+###
+DELETE http://localhost:3000/products/5f317f83d18db035a489edb6
+
 ### get products of farmer
 GET http://localhost:3000/farmers/5f30378415280f2cc0ca5818/products
 
@@ -43,11 +61,11 @@ Content-Type: application/json
 
 {
     "farmer": "5f30378415280f2cc0ca5818",
-    "name": "Fresh Corn",
-    "description": "Picked at the Peak of Perfection: Our love for vegetables began over 100 years ago in Le Sueur, Minnesota",
+    "name": "Fresh Corn 2",
+    "description": "2Picked at the Peak of Perfection: Our love for vegetables began over 100 years ago in Le Sueur, Minnesota",
     "price": 0.25,
-    "photoUrl": "assets/product1.jpg", 
-    "inStock": 10
+    "photoUrl": "assets/product2.jpg", 
+    "inStock": 100
 }
 
 #### Order ######
