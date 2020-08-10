@@ -32,8 +32,6 @@ export class DeleteProductComponent implements OnInit {
      console.log("deleted")
   })
 }
-deleteButtonClick(id){
-  this._router.navigate(['/deleteProduct', id])
-}
+
 
 }

@@ -5,8 +5,6 @@ import { map } from 'rxjs/operators';
 import {Router}  from '@angular/router';
 
 
-
-
 @Component({
   selector: 'products',
   templateUrl: './products.component.html',
@@ -14,7 +12,7 @@ import {Router}  from '@angular/router';
 })
 export class ProductsComponent implements OnInit {
 
-  productId;
+  id;
   constructor(private productService : ProductsService, private router: Router) { }
 
   products = [];
@@ -22,12 +20,18 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
      this.productService.getProducts().subscribe((response) => {
       this.products = response.data
- });
+ }); 
   }
  updateProduct(id: Object) {
-   this.router.navigate(['/updateProduct', id])
+   this.router.navigate(['/products/updateProduct', id])
 
   }
+
+  deleteProduct(id){
+    this.productService.deleteProduct(id).subscribe((response) => {
+      console.log("deleted")  
+    })
+    }
  
   
   
