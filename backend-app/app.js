@@ -6,20 +6,22 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cors = require('cors')
-const dotevn = require('dotenv')
-const mongoose = require('mongoose')
+const cors = require('cors');
+const dotevn = require('dotenv');
+const mongoose = require('mongoose');
+const fs = require('fs');
+
 const rtsIndex = require('./routes/index');
 const indexRouter = require('./routes/index');
 const customerRouter = require('./routes/customers')
-const farmerRouter = require('./routes/farmers')
-const productRouter = require('./routes/products')
-const ordersRouter = require('./routes/orders')
+const farmerRouter = require('./routes/farmers');
+const productRouter = require('./routes/products');
+const ordersRouter = require('./routes/orders');
 
-const customerOnly = require('./middlewears/customerOnly')
+const customerOnly = require('./middlewears/customerOnly');
 
 // initiation
-dotevn.config() // Load environment configuration from .env file
+dotevn.config(); // Load environment configuration from .env file
 const app = express();
 
 // Database
@@ -30,7 +32,11 @@ mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017', mongoOptions
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+// log API access
+app.use(logger('combined',{
+    stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+  }));
+
 app.use(cors());
 //app.use('/api', rtsIndex); TODO: whats this?
 app.use(express.json());
