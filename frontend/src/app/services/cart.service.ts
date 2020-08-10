@@ -1,5 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+import ToastsService from './toasts.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { Subject, Observable } from 'rxjs';
 export default class CartService {
   cartItems$: Subject<Object[]>
 
-  constructor() {
+  constructor(private toastsService: ToastsService) {
     this.cartItems$ = new Subject<Object[]>()
     this.loadCartItems()
   }
@@ -15,15 +16,40 @@ export default class CartService {
   addItemToCart(product: any): void {
     const items = this.getCartFromStorage()
     const { _id, name, photo, price } = product
-    items.push({ _id, name, photo, price })
+    const idx = items.findIndex(item => item['_id'] == _id)
+    if (idx != -1) {
+      items[idx]['quantity'] = items[idx]['quantity'] + 1
+    } else {
+      items.push({ _id, name, photo, price, quantity: 1 })
+    }
+    this.saveCartToStorage(items)
+    this.toastsService.generateSuccess(`${name} added to Cart`)
+    this.loadCartItems()
+  }
+
+  removeItemToCart(id: String, name: String): void {
+    const items = this.getCartFromStorage()
+    const updatedItems = items.filter(item => {
+      return item['_id'] != id
+    })
+    this.saveCartToStorage(updatedItems)
+    this.toastsService.generateSuccess(`${name} has been removed from Cart`)
+    this.loadCartItems()
+  }
+
+  updateItemQuantity(id: String, quantity: number): void {
+    const items = this.getCartFromStorage()
+    const idx = items.findIndex(item => item['_id'] == id)
+    if (idx != -1) {
+      items[idx]['quantity'] = quantity
+    }
     this.saveCartToStorage(items)
     this.loadCartItems()
   }
 
-  loadCartItems() : void {
+  loadCartItems(): void {
     setTimeout(() => {
       const items = this.getCartFromStorage()
-      console.log('Reload Shopping Cart')
       this.cartItems$.next(items)
     }, 0)
   }
@@ -31,7 +57,7 @@ export default class CartService {
   getCartFromStorage(): Object[] {
     let cart
     try {
-      cart = JSON.parse(localStorage.getItem('shopping-cart'))
+      cart = JSON.parse(localStorage.getItem('shopping-cart')) || []
     } catch (err) {
       cart = []
       this.saveCartToStorage(cart)
@@ -39,7 +65,7 @@ export default class CartService {
     return cart
   }
 
-  saveCartToStorage(cart: any) : void {
+  saveCartToStorage(cart: any): void {
     localStorage.setItem('shopping-cart', JSON.stringify(cart))
   }
 }

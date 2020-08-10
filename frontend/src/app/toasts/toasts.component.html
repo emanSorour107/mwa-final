@@ -1,11 +1,15 @@
 <div class="toasts-container d-flex w-25 flex-column justify-content-end">
-    <div class="card shadow">
+    <div class="card shadow" *ngFor="let toast of toasts">
         <div class="d-flex flex-row">
             <div class="col-2 bg-success toast-logo d-flex align-items-center">
-                <span><i class="fa fa-check-circle fa-2x text-white"></i></span>
+                <span>
+                    <i *ngIf="toast.isSuccess" class="fa fa-check-circle fa-2x text-white"></i>
+                    <i *ngIf="!toast.isSuccess" class="fa fa-check-circle fa-2x text-white"></i>
+                </span>
             </div>
-            <div class="col-10">
-                <span>Item added to cart</span>
+            <div class="col-10 toast-content">
+                <span>{{toast.message}}</span>
+                <span aria-hidden="true" class="close-icon text-danger" (click)="removeToast(toast.id)">&times;</span>
             </div>
         </div>
     </div>
