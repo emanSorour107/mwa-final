@@ -11,7 +11,6 @@ export class CartComponent {
   
   constructor(private cartService: CartService) { 
     this.cartService.cartItems$.subscribe((cartItems) => {
-      console.log('Updating the Cart')
       this.cartCount = cartItems.length
     })
   }
