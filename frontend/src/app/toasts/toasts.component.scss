@@ -1,0 +1,25 @@
+.toasts-container {
+    position: absolute;
+    top: 60px;
+    right: 15px;
+
+    .card {
+        margin-bottom: 5px;
+        border: none;
+
+        .toast-logo {
+            min-height: 40px;
+        }
+    
+        .toast-content {
+            font-size: 13px;
+
+            .close-icon {
+                position: absolute;
+                top: 0;
+                right: 5px;
+                cursor: pointer;
+            }
+        }
+    }
+}
