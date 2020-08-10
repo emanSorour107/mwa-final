@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { User } from '../shared/user.model';
-import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-user',
