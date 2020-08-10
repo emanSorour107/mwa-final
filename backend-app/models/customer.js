@@ -7,9 +7,9 @@ const customerSchema = mongoose.Schema({
     password: String
 })
 
-customerSchema.methods.getFullName = function() {
+customerSchema.virtual('fullName').get( function() {
     return `${this.firstName} ${this.lastName}`
-}
+});
 
 const Customer = mongoose.model('Customer', customerSchema)
 module.exports = Customer

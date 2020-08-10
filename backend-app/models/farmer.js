@@ -4,7 +4,10 @@ const farmerSchema = mongoose.Schema({
     firstName: String, 
     lastName: String,
     email: String,
-    password: String
+    password: String,
+    tel: String,
+    address: String,
+    reputation: Number
 })
 
 farmerSchema.methods.getFullName = function() {
