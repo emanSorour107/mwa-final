@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import ToastsService from '../services/toasts.service'
 
 @Component({
   selector: 'app-toasts',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToastsComponent implements OnInit {
 
-  constructor() { }
+  toasts = []
+  constructor(private toastService: ToastsService) {
+    this.toastService.toasts$
+      .subscribe(items => this.toasts = items)
+  }
 
   ngOnInit(): void {
   }
 
+  removeToast(id: number): void {
+    this.toastService.removeToast(id)
+  }
 }
