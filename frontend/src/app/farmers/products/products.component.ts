@@ -11,7 +11,7 @@ export class ProductsComponent implements OnInit {
 
   constructor(private farmerService: FarmerService, private cartService: CartService) { }
 
-  products: Object[]
+  products: Object[];
 
   ngOnInit(): void {
     this.farmerService.getAllProducts('1212')
