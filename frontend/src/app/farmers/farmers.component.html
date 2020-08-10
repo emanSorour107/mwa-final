@@ -1,1 +1,19 @@
-<p>farmers works!</p>
+<div id="farmers-container">
+    <div class="d-flex flex-row flex-wrap mt-5 mb-5">
+        <div *ngFor="let farmer of farmers" class="col-md-4 col-lg-4 pt-2 pb-2">
+            <div class="card">
+                <div class="card-header">
+                    <a [routerLink]="['/farmers', farmer._id]">{{farmer.firstName}} {{farmer.firstName}}</a>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <span>Address: {{farmer.address}}</span>
+                    </div>
+                    <div>
+                        Reputation: <span class="badge badge-info">{{farmer.reputation}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
