@@ -1,3 +1,4 @@
+import { ProductRoutingModule } from './product-routing.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductsComponent } from './products/products.component';
@@ -9,18 +10,17 @@ import { UpdateProductComponent } from './update-product/update-product.componen
 
 
 
-
-
-
 @NgModule({
   declarations: [ProductsComponent, AddProductComponent, DeleteProductComponent, UpdateProductComponent],
   imports: [
     CommonModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ProductRoutingModule
   ],
   exports: [
     ProductsComponent
   ]
+
 })
 export class ProductsModule { }

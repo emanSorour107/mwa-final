@@ -15,7 +15,7 @@ import {Router}  from '@angular/router';
 export class DeleteProductComponent implements OnInit {
 
   id;
-  
+
   constructor(
     private route: ActivatedRoute,
     private productService: ProductsService,

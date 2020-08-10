@@ -6,12 +6,8 @@ import { AddProductComponent } from './add-product/add-product.component';
 import { DeleteProductComponent } from './delete-product/delete-product.component';
 import { UpdateProductComponent } from './update-product/update-product.component';
 
-
-
-
-
 const routes: Routes = [
-  { path: 'products', component: ProductsComponent },
+  { path: '', component: ProductsComponent },
   { path: 'addProduct', component: AddProductComponent },
   { path: 'deleteProduct/:id', component: DeleteProductComponent },
   { path: 'updateProduct/:id', component: UpdateProductComponent }
@@ -20,7 +16,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class ProductRoutingModule { }

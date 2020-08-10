@@ -1,4 +1,8 @@
-<p>products works!</p>
+<p>List page</p>
+<div>
+  <nav> <a [routerLink]="['addProduct']" > Add</a> </nav>
+
+</div>
 <!-- <ng-container *ngFor="let product of products">
     <span>
         {{ product.name | uppercase }}
@@ -17,4 +21,4 @@
           <button (click)="updateProduct(product._id)"></button>
           <button (click)="deleteButtonClick(product._id)"></button>
         </tr>
-        
+      </table>
