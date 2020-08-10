@@ -29,7 +29,7 @@ export class AddProductComponent  {
     var inStock =this.productForm.getRawValue().inStock 
     var product = {name :name, description: description, price: price, photo : photo, inStock : inStock}
     
-    this.http.post<{idToken: string}>('http://localhost:3001/products/add', product).subscribe((res)=>
+    this.http.post<{idToken: string}>('http://localhost:3000/products', product).subscribe((res)=>
       console.log("ok"))
     }  
 }

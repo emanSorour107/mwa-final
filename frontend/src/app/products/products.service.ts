@@ -14,15 +14,15 @@ export class ProductsService {
   constructor(private http : HttpClient) { }
 
   getProducts(): Observable<any>{
-    return this.http.get('http://localhost:3001/products/all-products')
+    return this.http.get('http://localhost:3000/products')
 }
 
-deleteProducts(id) {
-  return this.http.delete('localhost:3001/products/delete', {params : {'id': id}})
+deleteProduct(id) {
+  return this.http.delete(`http://localhost:3000/products/${id}`)
 }
 
 getProductById(id: object){
-  return this.http.get(`http://localhost:3001/products/${id}`)
+  return this.http.get(`http://localhost:3000/products/${id}`)
 }
 
 }

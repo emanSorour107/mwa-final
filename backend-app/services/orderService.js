@@ -71,7 +71,6 @@ let OrderService = {
             let newItem = new Product({...item.toObject(), inStock: itemsMap[item._id]})
             newOrderItems.push(newItem)
         })
-
         
         const order = new Order({
             customer: cutomerId,

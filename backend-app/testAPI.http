@@ -64,8 +64,8 @@ Content-Type: application/json
     "name": "Fresh Corn",
     "description": "Picked at the Peak of Perfection: Our love for vegetables began over 100 years ago in Le Sueur, Minnesota",
     "price": 0.25,
-    "photoUrl": "assets/product.jpg", 
-    "inStock": 100
+    "photoUrl": "https://placeimg.com/500/500/tech?query=1", 
+    "inStock": 10
 }
 
 #### Order ######

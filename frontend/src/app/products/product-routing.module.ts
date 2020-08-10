@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'addProduct', component: AddProductComponent },
   { path: 'deleteProduct/:id', component: DeleteProductComponent },
   { path: 'updateProduct/:id', component: UpdateProductComponent }
+  
 
 
 ];
