@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '../products.service';
 import { observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {Router}  from '@angular/router';
+
 
 
 
@@ -12,7 +14,8 @@ import { map } from 'rxjs/operators';
 })
 export class ProductsComponent implements OnInit {
 
-  constructor(private productService : ProductsService) { }
+  productId;
+  constructor(private productService : ProductsService, private router: Router) { }
 
   products = [];
 
@@ -20,6 +23,9 @@ export class ProductsComponent implements OnInit {
      this.productService.getProducts().subscribe((response) => {
       this.products = response.data
  });
+  }
+ updateProduct(id: Object) {
+   this.router.navigate(['/updateProduct', id])
 
   }
  

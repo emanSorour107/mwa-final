@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { ProductsService } from '../products.service';
+
+
+
 
 
 @Component({
@@ -12,7 +17,7 @@ export class UpdateProductComponent implements OnInit {
 
   updateForm : FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(private productService : ProductsService, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
 
     this.updateForm = formBuilder.group({
       name: ['', [Validators.required]],
@@ -35,7 +40,17 @@ export class UpdateProductComponent implements OnInit {
       console.log("ok"))
     }  
     ngOnInit():void{
+      this.route.params.subscribe((param) => {
+        const id = param.get('id');
+         console.log(param['id']
+         )
+        }); 
+    }
 
+    getProduct(id : object){
+     this.productService.getProductById(id).subscribe(
+       
+     )
     }
 
 }

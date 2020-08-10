@@ -14,7 +14,7 @@
           <td>{{product.price}}</td>
           <td>{{product.image}}</td>
           <td>{{product.inStock}}</td>
+          <button (click)="updateProduct(product._id)"></button>
           <button (click)="deleteButtonClick(product._id)"></button>
-          <button (click)="editButtonClick(product._id)"></button>
         </tr>
         

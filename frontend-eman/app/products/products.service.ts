@@ -21,4 +21,8 @@ deleteProducts(id) {
   return this.http.delete('localhost:3001/products/delete', {params : {'id': id}})
 }
 
+getProductById(id: object){
+  return this.http.get(`http://localhost:3001/products/${id}`)
+}
+
 }
