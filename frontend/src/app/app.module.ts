@@ -24,7 +24,7 @@ import { UserComponent } from './user/user.component';
     UserComponent,
     SignUpComponent,
     UserProfileComponent,
-    SignInComponent
+    SignInComponent,
     NavigationComponent,
     CartComponent,
     ToastsComponent

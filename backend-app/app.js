@@ -1,5 +1,5 @@
 require('./config/config');
-require('./models/db');
+// require('./models/db');
 
 const createError = require('http-errors');
 const express = require('express');
@@ -9,9 +9,7 @@ const logger = require('morgan');
 const cors = require('cors')
 const dotevn = require('dotenv')
 const mongoose = require('mongoose')
-const rtsIndex = require('./routes/index.router');
-
-
+const rtsIndex = require('./routes/index');
 const indexRouter = require('./routes/index');
 const customerRouter = require('./routes/customers')
 const farmerRouter = require('./routes/farmers')
@@ -33,9 +31,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
 app.use(cors());
-app.use('/api', rtsIndex);
+//app.use('/api', rtsIndex); TODO: whats this?
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
