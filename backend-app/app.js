@@ -21,7 +21,7 @@ const customerOnly = require('./middlewears/customerOnly');
 // initiation
 dotevn.config(); // Load environment configuration from .env file
 const app = express();
-
+console.log(999990, process.env.DB_URL)
 // Database
 const mongoOptions = { server: { socketOptions: { keepAlive: 1 } }, useNewUrlParser: true }
 mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017', mongoOptions)
