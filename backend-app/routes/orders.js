@@ -39,6 +39,17 @@ router.post('/', async function(req, res, next) {
 
 });
 
+router.put('/:id/rate/:rate', async function(req, res, next) {
+  const { id, rate} = req.params;
+  
+  let result = await OrderService.rateOrder(id, rate);
+  if (result.error)
+    return next(result)
+  
+   res.json(result);
+
+});
+
 // update orders
 router.put('/:id', function(req, res, next) {
   

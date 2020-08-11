@@ -9,8 +9,17 @@ let getByQuery = async (query, callback) => {
     return result;
 };
 
-let updateProductStock = async (productToUpdate, stockAfter) =>{
+let updateProductStock = async(productIds, stockAfter) =>{
+    let saveQuery = [];
+    productIds.forEach(id=>{
+        saveQuery.push(Product.findByIdAndUpdate(id, {inStock: stockAfter[id]}))
+        
+    })
 
+    return Promise.all(saveQuery)
+    
+    
+    
 };
 
 
@@ -59,10 +68,12 @@ let OrderService = {
         let stockAfter = {}
         productItems.forEach((item)=>{
             console.log(9, item.inStock, item._id, itemsMap[item._id])
+
             if (item.inStock < itemsMap[item._id])
                 shortageStock.push({_id: item._id, inStock: item.inStock})
             
-                stockAfter[item._id] = item.inStock - itemsMap[item._id];
+            stockAfter[item._id] = item.inStock - itemsMap[item._id];
+            item.inStock -= itemsMap[item._id];
         })
 
         console.log(99, shortageStock, itemsMap)
@@ -76,10 +87,7 @@ let OrderService = {
             return sum + cur;
         })
         
-
-        // update order stock
-        let result = await updateProductStock(productItems, stockAfter);
-
+       
         // create order
         let newOrderItems = []
         // create orderItems
@@ -100,6 +108,12 @@ let OrderService = {
 
         result = await order.save();
         console.log('Create order', result)
+
+        // update order stock
+        let result2 = await updateProductStock(productIds, stockAfter);
+        console.log('Stock updated', result2)
+        
+
         let orderId = result._id;
 
         OrderMail.sendMailWhenCreateOrder(farmerId, customerId, orderId,  newOrderItems, totalAmount)
@@ -149,6 +163,10 @@ let OrderService = {
                 callback({result: "OK"})
             }
         }
+
+    },
+
+    rateOrder: async (id, rate) => {
 
     },
 
