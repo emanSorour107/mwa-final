@@ -30,29 +30,52 @@ let OrderService = {
         return await getByQuery(query);
     },
 
-    createOrder: async (customerId, address, products) => {
-        const productIds = products.map(prod => prod['_id'])
-        const orderItems = await Product.find({_id: productIds});
-        //TODO: Handle save Order
+    createOrder: async (cutomerId, farmerId, orderItems) => {
 
-        /**
-         * Order {
-         * 
-         *  [
-         *      OrderItem(productId, quantity)
-         *  ]
-         * }
-         */
+        let productIds = orderItems.map(item => item._id);
+        let itemsMap = Object.fromEntries(orderItems.map(item=>[item._id, item.quantity]));
 
+        const productItems = await Product.find().where('_id').in(productIds).exec()
+        //  ({_id: productIds});
 
-        let totalAmount = products.map(p=>p.price).reduce((sum=0, cur)=>{
-            return sum + cur.price;
+        let productItemIds = productItems.map(item=>item._id.toString());
+        
+        console.log(99999, productItems.length , orderItems.length, productItemIds, orderItems, orderItems.filter(item=> productItemIds.indexOf(item._id)>-1))
+        // return null;
+        if (productItems.length < orderItems.length)
+            return ({error: "001", message: "Product not exists", data: orderItems.filter(item => !productItemIds.includes(item._id)) })
+
+        //check stock
+        let shortageStock = []
+        productItems.forEach((item)=>{
+            console.log(9, item.inStock, item._id, itemsMap[item._id])
+            if (item.inStock < itemsMap[item._id])
+                shortageStock.push({_id: item._id, inStock: item.inStock})
+        })
+
+        console.log(99, shortageStock, itemsMap)
+
+        if (shortageStock.length){
+            // throw new Error()
+            return ({error:"002", message:"Shortage of stock on", data: shortageStock.map(item=>item._id).join(', ')})
+        }
+        
+        let totalAmount = productItems.map(p=>p.price* itemsMap[p._id]).reduce((sum=0, cur)=>{
+            return sum + cur;
+        })
+
+        let newOrderItems = []
+        // create orderItems
+        productItems.forEach((item)=>{
+            console.log(999, item)
+            let newItem = new Product({...item.toObject(), inStock: itemsMap[item._id]})
+            newOrderItems.push(newItem)
         })
         
         const order = new Order({
-            customer: customerId,
-            //farmer: farmerId,
-            products,
+            customer: cutomerId,
+            farmer: farmerId,
+            orderItems: newOrderItems,
             status: 'PENDING',
             totalAmount: totalAmount
 
