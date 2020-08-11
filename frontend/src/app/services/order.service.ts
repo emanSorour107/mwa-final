@@ -1,19 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export default class OrderService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
-  getOrders = (farmerId: String) : Observable<[]> => {
-    return Observable.create((obs) => {
-      setTimeout(() => {
-        obs.next(mockOrders)
-      }, 1000)
-    })
+  getOrders = (farmerId: String) : Observable<Object > => {
+    return this.http.get(`${environment.apiUrl}/orders/${farmerId}`);
   }
 }
 

@@ -12,8 +12,8 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class OrdersComponent implements OnInit {
   farmerId: String
-  orders: Object[];
-  filteredOrders: Object[];
+  orders;
+  filteredOrders;
 
   constructor(private orderService: OrderService, private route: ActivatedRoute) {
 
