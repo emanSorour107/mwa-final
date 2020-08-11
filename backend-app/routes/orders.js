@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const OrderService = require('../services/orderService');
-const { route } = require('.');
 const Mail = require('../utils/mail');
 
 router.post('/sendmailtest', function (req, res, next) {
@@ -40,6 +39,18 @@ router.post('/', async function(req, res, next) {
 
 });
 
+router.put('/:id/rate/:rate', async function(req, res, next) {
+  const { id, rate} = req.params;
+  
+  let result = await OrderService.rateOrder(id, rate);
+  if (result.error)
+    return next(result)
+  
+   res.json(result);
+
+});
+
+// update orders
 router.put('/:id', function(req, res, next) {
   
   let data = req.query;
@@ -55,6 +66,8 @@ router.put('/:id', function(req, res, next) {
   })
   
 });
+
+
 
 router.delete('/:id', function(req, res, next) {
   let id = req.params.id;
