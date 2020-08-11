@@ -1,39 +1,15 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-
-import { environment } from '../../environments/environment';
-import { User } from './user.model';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  selectedUser: User = {
-    fullName: '',
-    email: '',
-    password: ''
-  };
-
-  noAuthHeader = { headers: new HttpHeaders({ 'NoAuth': 'True' }) };
-
   constructor(private http: HttpClient) { }
 
-
-  postUser(user: User){
-    return this.http.post(environment.apiUrl+'/register',user,this.noAuthHeader);
-  }
-
-  login(authCredentials) {
-    return this.http.post(environment.apiUrl + '/authenticate', authCredentials,this.noAuthHeader);
-  }
-
-  getUserProfile() {
-    return this.http.get(environment.apiUrl + '/userProfile');
-  }
-
-
-  setToken(token: string) {
+  saveToken(token: string) {
     localStorage.setItem('token', token);
   }
 
@@ -46,24 +22,37 @@ export class UserService {
   }
 
   getUserPayload() {
-    var token = this.getToken();
+    const token = this.getToken();
     if (token) {
       var userPayload = atob(token.split('.')[1]);
       return JSON.parse(userPayload);
     }
-    else
-      return null;
+    return null;
   }
 
-  registerUser(user): Observable<Object> {
-    return null
+  registerUser(user: Object): Observable<Object> {
+    const payload = {
+      ...user,
+      isFarmer: user['role'] == 'FARMER',
+    }
+    return this.http.post(`${environment.apiUrl}/signup`, payload)
+  }
+
+  login(email: String, password: String, successCB: Function, errorCB: Function) {
+    const payload = { email, password }
+    this.http.post(`${environment.apiUrl}/login`, payload, { observe: 'response' })
+      .subscribe((res) => {
+        this.saveToken(res.headers.get('Authentication'))
+        successCB()
+      }, (error) => errorCB(error))
   }
 
   isLoggedIn() {
-    var userPayload = this.getUserPayload();
-    if (userPayload)
+    const userPayload = this.getUserPayload();
+    if (userPayload) {
       return userPayload.exp > Date.now() / 1000;
-    else
-      return false;
+    }
+
+    return false;
   }
 }

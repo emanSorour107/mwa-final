@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
 import { UserService } from '../../shared/user.service';
+import ToastsService from 'src/app/services/toasts.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -10,31 +10,29 @@ import { UserService } from '../../shared/user.service';
   styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent implements OnInit {
+  loginForm: FormGroup
 
-  constructor(public userService: UserService, private router : Router) { }
-
-  model = {
-    email: '',
-    password:''
-
-  };
-
-  emailRegex =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  serverErrorMessages: string;
+  constructor(public userService: UserService,
+    private router: Router,
+    private toastService: ToastsService) {
+    this.loginForm = new FormGroup(
+      {
+        email: new FormControl('tien@gmail.com', Validators.compose([Validators.required, Validators.email])),
+        password: new FormControl('123456', [Validators.required]),
+      }
+    )
+  }
 
   ngOnInit() {
   }
 
-  onSubmit(form : NgForm){
-    this.userService.login(form.value).subscribe(
-      res => {
-        this.userService.setToken(res['token']);
-        this.router.navigateByUrl('/userprofile');
-      },
-      err => {
-        this.serverErrorMessages = err.error.message;
-      }
-    );
+  onSubmit() {
+    const { email, password } = this.loginForm.value
+    this.userService.login(email, password, () => {
+      this.router.navigate(['/'])
+    }, (error) => {
+      this.toastService.generateErorr(error)
+    });
   }
 
 }

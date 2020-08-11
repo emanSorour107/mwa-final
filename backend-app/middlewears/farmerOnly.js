@@ -8,7 +8,7 @@ module.exports = function (req, res, next) {
         const token = header && header.replace('Bearer ', '')
         if (token && jwt.verify(token, process.env.APP_SECRET)) {
             const payload = jwt.decode(token)
-            if (payload.role == UserService.ROLES.CUSTOMER) {
+            if (payload.role == UserService.ROLES.FARMER) {
                 next()
             }
         }

@@ -1,9 +1,9 @@
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from "@angular/common/http";
+import { HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import { tap } from 'rxjs/operators';
 import { Router } from "@angular/router";
-
+import { tap } from 'rxjs/operators';
 import { UserService } from "../shared/user.service";
+
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -16,7 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(req.clone());
         else {
             const clonedreq = req.clone({
-                headers: req.headers.set("Authorization", "Bearer " + this.userService.getToken())
+                headers: req.headers.set("Authorization", this.userService.getToken())
             });
             return next.handle(clonedreq).pipe(
                 tap(

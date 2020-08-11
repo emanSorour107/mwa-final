@@ -103,3 +103,12 @@ Content-Type: application/json
 
 ### get orders of customer
 GET http://localhost:3000/customers/5f30508bf04a4129b4db2a64/orders
+
+### Login
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+    "email": "tien@gmail.com",
+    "password": "123456"
+}

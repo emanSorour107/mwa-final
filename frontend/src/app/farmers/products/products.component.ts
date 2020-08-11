@@ -20,7 +20,7 @@ export class ProductsComponent implements OnInit {
       this.farmerId = params["id"];
 
       this.farmerService.getAllProducts(this.farmerId)
-        .subscribe(products => this.products = products)
+        .subscribe(res => this.products = res['data'])
     });
   }
 
