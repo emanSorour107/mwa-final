@@ -1,0 +1,12 @@
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/";
+
+MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("mwa");
+    dbo.collection("farmers").find({ farmer: "far2" }).toArray(function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        db.close();
+    });
+});

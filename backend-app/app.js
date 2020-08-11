@@ -33,9 +33,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // log API access
-app.use(logger('combined',{
+app.use(logger('combined', {
     stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
-  }));
+}));
 
 app.use(cors());
 //app.use('/api', rtsIndex); TODO: whats this?
