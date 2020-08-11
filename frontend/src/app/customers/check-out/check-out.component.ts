@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import CartService from '../../services/cart.service';
 import CustomerService from '../../services/customer.service'
 
@@ -10,37 +9,37 @@ import CustomerService from '../../services/customer.service'
 })
 export class CheckOutComponent implements OnInit {
 
-  checkoutForm: FormGroup
-  cart = { total: 0, items: [] }
+  //checkoutForm: FormGroup
+  cart = { total: 0, items: [], farmerId: '' }
 
   constructor(private cartService: CartService, private customerService: CustomerService) {
-    this.checkoutForm = new FormGroup(
-      {
-        street: new FormControl('', [Validators.required]),
-        city: new FormControl('', [Validators.required]),
-        state: new FormControl('', [Validators.required]),
-        zipcode: new FormControl('', Validators.compose([
-          Validators.required,
-          Validators.maxLength(5),
-          Validators.minLength(5)
-        ])),
-        name: new FormControl('', [Validators.required])
-      }
-    )
+    // this.checkoutForm = new FormGroup(
+    //   {
+    //     street: new FormControl('', [Validators.required]),
+    //     city: new FormControl('', [Validators.required]),
+    //     state: new FormControl('', [Validators.required]),
+    //     zipcode: new FormControl('', Validators.compose([
+    //       Validators.required,
+    //       Validators.maxLength(5),
+    //       Validators.minLength(5)
+    //     ])),
+    //     name: new FormControl('', [Validators.required])
+    //   }
+    // )
 
-    this.cartService.cartItems$
-      .subscribe(items => {
-        Object.assign(this.cart, this.cartService.getCartData(items))
+    this.cartService.cart$
+      .subscribe(c => {
+        Object.assign(this.cart, this.cartService.getCartData(c))
       })
 
-    this.cartService.loadCartItems()
+    this.cartService.loadCart()
   }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
-    const { street, city, state, zipcode, name } = this.checkoutForm.value
-    this.customerService.makeOrder(this.cart.items, {street, city, state, zipcode, name})
+    //const { street, city, state, zipcode, name } = this.checkoutForm.value
+    this.customerService.makeOrder(this.cart.items, this.cart.farmerId)
   }
 }

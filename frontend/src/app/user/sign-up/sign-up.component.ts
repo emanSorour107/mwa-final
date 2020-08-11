@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { UserService } from '../../shared/user.service'
+import { User } from 'src/app/shared/user.model';
+import ToastsService from '../../services/toasts.service'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,40 +14,63 @@ import { UserService } from '../../shared/user.service'
 })
 
 export class SignUpComponent implements OnInit {
+  user: User;
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  roles: any[];
   showSucessMessage: boolean;
   serverErrorMessages: string;
 
-  constructor(public userService: UserService) { }
+  signupForm: FormGroup
 
-  ngOnInit() {
+  constructor(
+    public userService: UserService,
+    private router: Router,
+    private toastService: ToastsService) {
+    this.signupForm = new FormGroup(
+      {
+        role: new FormControl(''),
+        email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
+        firstName: new FormControl('', [Validators.required]),
+        lastName: new FormControl('', [Validators.required]),
+        password: new FormControl('', [Validators.required]),
+      }
+    )
   }
 
-  onSubmit(form: NgForm) {
-    this.userService.postUser(form.value).subscribe(
-      res => {
-        this.showSucessMessage = true;
-        setTimeout(() => this.showSucessMessage = false, 4000);
-        this.resetForm(form);
-      },
-      err => {
-        if (err.status === 422) {
-          this.serverErrorMessages = err.error.join('<br/>');
-        }
-        else
-          this.serverErrorMessages = 'Something went wrong.Please contact admin.';
-      }
-    );
+  ngOnInit() {
+    this.resetForm(null);
   }
 
   resetForm(form: NgForm) {
-    this.userService.selectedUser = {
+    if (form != null)
+      form.reset();
+    this.user = {
       fullName: '',
       email: '',
       password: ''
-    };
-    form.resetForm();
-    this.serverErrorMessages = '';
+    }
+
+    if (this.roles)
+      this.roles.map(x => x.selected = false);
+  }
+
+  onSubmit() {
+
+    console.info(this.signupForm.value)
+
+    this.userService.registerUser(this.signupForm.value)
+      .subscribe((data) => {
+        if (data['Succeeded'] == true) {
+          this.toastService.generateSuccess('User registration successful');
+          this.router.navigate(['/login'])
+        } else {
+          //this.toastService.generateErorr(error); TODO: make sure error is show up
+        }
+      });
+  }
+
+  updateSelectedRoles(index) {
+    this.roles[index].selected = !this.roles[index].selected;
   }
 
 }

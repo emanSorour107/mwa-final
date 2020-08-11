@@ -1,17 +1,23 @@
-<form #signUpForm="ngForm" (ngSubmit)="signUpForm.valid && onSubmit(signUpForm)">
-    <input type="text" #fullName="ngModel" [(ngModel)]="userService.selectedUser.fullName" name="fullName" placeholder="Full Name" required [ngClass]="{'invalid-textbox' :signUpForm.submitted && !fullName.valid }">
-    <div *ngIf="signUpForm.submitted && !fullName.valid">
-        <label class="validation-message">This field is required.</label>
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    <div>
+        <input placeholder="First Name" type="text" [formControl]="signupForm.get('firstName')">
     </div>
-    <input type="text" #email="ngModel" [(ngModel)]="userService.selectedUser.email" name="email" placeholder="Email" required [pattern]="emailRegex" [ngClass]="{'invalid-textbox' :signUpForm.submitted && !email.valid }">
-    <div *ngIf="signUpForm.submitted && email.errors">
-        <label *ngIf="email.errors.required" class="validation-message">This field is required.</label>
-        <label *ngIf="email.errors.pattern" class="validation-message">Invalid email address.</label>
+
+    <div>
+        <input placeholder="Last Name" type="text" [formControl]="signupForm.get('lastName')">
     </div>
-    <input type="password" #password="ngModel" [(ngModel)]="userService.selectedUser.password" name="password" placeholder="Password" minlength="4" required [ngClass]="{'invalid-textbox' :signUpForm.submitted && !password.valid }">
-    <div *ngIf="signUpForm.submitted && password.errors">
-        <label *ngIf="password.errors.required" class="validation-message">This field is required.</label>
-        <label *ngIf="password.errors.minlength" class="validation-message">Enter atleast 4 characters.</label>
+    <div>
+        <input placeholder="Email" type="text" [formControl]="signupForm.get('email')">
+    </div>
+    <div>
+        <input placeholder="Password" type="password" [formControl]="signupForm.get('password')">
+    </div>
+
+    <div>
+        <label for="farmer">Farmer</label>
+        <input type="radio" name="role" id="farmer" value="farmer" class="mr-3" [formControl]="signupForm.get('role')">
+        <label for="customer ">Customer</label>
+        <input type="radio" name="role" id="customer" value="customer" [formControl]="signupForm.get('role')">
     </div>
     <input type="submit" value="Sign Up">
 </form>

@@ -49,7 +49,7 @@ const mockFarmers = [
 const mockProducts = [
   {
     _id: 'asasas',
-    farmer: "asasasas",
+    farmer: {_id: "asasasas"},
     name: 'Shrimp - Black Tiger 16/20',
     description: 'scelerisque dui. Suspendisse ac metus vitae velit egestas lacinia. Sed',
     price: 36.07,
@@ -58,7 +58,7 @@ const mockProducts = [
   },
   {
     _id: 'asfdfdff',
-    farmer: "asasasas",
+    farmer: {_id: "asasasas"},
     name: 'Shrimp - Black Tiger 16/20',
     description: 'scelerisque dui. Suspendisse ac metus vitae velit egestas lacinia. Sed',
     price: 36.07,
@@ -67,7 +67,7 @@ const mockProducts = [
   },
   {
     _id: 'dsdsdsdsd',
-    farmer: "asasasas",
+    farmer: {_id: "asasasas"},
     name: 'Shrimp - Black Tiger 16/20',
     description: 'scelerisque dui. Suspendisse ac metus vitae velit egestas lacinia. Sed',
     price: 36.07,

@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { User } from '../shared/user.model';
 
 @Component({
   selector: 'app-user',
@@ -8,6 +9,12 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 })
 export class UserComponent implements OnInit {
+  user: User;
+  allRoles = [
+    {name: 'ADMIN', checked: false},
+    {name: 'FARMER', checked: false},
+    {name: 'CUSTOMER',checked: false}
+  ];
 
   constructor() { }
 
