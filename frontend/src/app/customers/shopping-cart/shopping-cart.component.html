@@ -63,9 +63,6 @@
                 <span class="btn btn-primary shadow mr-2" [routerLink]="['/farmers']">
                     <i class="fa fa-home"></i> Continue shopping
                 </span>
-                <button type="submit" [disabled]="cart.items.length == 0" class="btn btn-secondary shadow mr-2">
-                    <span class="fa fa-check"> Check Availability</span>
-                </button>
                 <button type="submit" [disabled]="cart.items.length == 0" [routerLink]="['/customers','checkout']" class="btn btn-success shadow">
                     <span class="fa fa-check"> Check out</span>
                 </button>
