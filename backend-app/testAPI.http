@@ -48,7 +48,7 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:3000/products/5f317f83d18db035a489edb6
+DELETE http://localhost:3000/products/5f32b04e3883f75118fa3d15
 
 ### get products of farmer
 GET http://localhost:3000/farmers/5f30378415280f2cc0ca5818/products
@@ -64,7 +64,7 @@ Content-Type: application/json
     "name": "Fresh Corn 2",
     "description": "2Picked at the Peak of Perfection: Our love for vegetables began over 100 years ago in Le Sueur, Minnesota",
     "price": 0.25,
-    "photoUrl": "assets/product2.jpg", 
+    "photoUrl": "assets/USAMap.png", 
     "inStock": 100
 }
 
