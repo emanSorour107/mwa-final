@@ -1,4 +1,4 @@
-require('./config/config');
+//require('./config/config');
 // require('./models/db');
 
 const createError = require('http-errors');
@@ -10,13 +10,11 @@ const cors = require('cors');
 const dotevn = require('dotenv');
 const mongoose = require('mongoose');
 const fs = require('fs');
-
-const rtsIndex = require('./routes/index');
-const indexRouter = require('./routes/index');
 const customerRouter = require('./routes/customers')
 const farmerRouter = require('./routes/farmers');
 const productRouter = require('./routes/products');
 const ordersRouter = require('./routes/orders');
+const userRouter = require('./routes/users')
 
 const customerOnly = require('./middlewears/customerOnly');
 
@@ -39,22 +37,22 @@ mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017', mongoOptions
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+app.disable('x-powered-by')
 
 // log API access
 app.use(logger('combined',{
     stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
   }));
 
-app.use(cors());
-//app.use('/api', rtsIndex); TODO: whats this?
+app.use(cors({exposedHeaders: [process.env.AUTHENTICATION_HEADER]}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Setup available APIs
-app.use('/', indexRouter);
-app.use('/customers', customerOnly, customerRouter);
+app.use('/', userRouter);
+app.use('/customers', customerRouter);
 app.use('/products', productRouter)
 app.use('/farmers', farmerRouter)
 app.use('/orders', ordersRouter)

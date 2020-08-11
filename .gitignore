@@ -103,8 +103,12 @@ dist
 # TernJS port file
 .tern-port
 
+.vscode/
+.idea
 
 .idea
 
 
 nhanapitest.http
+assets
+download

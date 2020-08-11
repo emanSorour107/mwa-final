@@ -3,8 +3,7 @@ const mongoose = require('mongoose')
 const customerSchema = mongoose.Schema({
     firstName: String, 
     lastName: String,
-    email: String,
-    password: String
+    email: String
 })
 
 customerSchema.virtual('fullName').get( function() {

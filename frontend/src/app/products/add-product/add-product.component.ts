@@ -10,8 +10,9 @@ import { ProductsService } from '../products.service';
 })
 export class AddProductComponent {
   productForm: FormGroup;
+  file: string;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private productService : ProductsService) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private productService: ProductsService) {
 
     this.productForm = formBuilder.group({
       name: ['', [Validators.required]],
@@ -22,13 +23,22 @@ export class AddProductComponent {
     })
 
   }
-  onSubmit(): void {
-    var name = this.productForm.getRawValue().name
-    var description = this.productForm.getRawValue().description
-    var price = this.productForm.getRawValue().price
-    var photo = this.productForm.getRawValue().photo
-    var inStock = this.productForm.getRawValue().inStock
-    var product = { name: name, description: description, price: price, photo: photo, inStock: inStock }
-    this.productService.postProduct(product)
+
+  onFileSelect(event) {
+    const file = event.target.files[0];
+    this.file = file;
   }
+
+  onSubmit(): void {
+    const formData = new FormData()
+    formData.append('file', this.file)
+    formData.append('name', this.productForm.getRawValue().name)
+    formData.append('description', this.productForm.getRawValue().description)
+    formData.append('price', this.productForm.getRawValue().price)
+    formData.append('inStock', this.productForm.getRawValue().inStock)
+    
+    this.productService.postProduct(formData)
+  }
+
+
 }

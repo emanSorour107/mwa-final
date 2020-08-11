@@ -1,16 +1,13 @@
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FarmersRoutingModule } from './farmers-routing.module';
 import { FarmersComponent } from './farmers.component';
 import { ProductsComponent } from './products/products.component';
-import { OrdersComponent } from './orders/orders.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 
 @NgModule({
-  declarations: [FarmersComponent, ProductsComponent, OrdersComponent],
+  declarations: [FarmersComponent, ProductsComponent],
   imports: [
     CommonModule,
     FarmersRoutingModule,
