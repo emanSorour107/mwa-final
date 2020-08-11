@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import CartService from '../services/cart.service';
 
 @Component({
@@ -10,8 +10,8 @@ export class CartComponent {
   cartCount: number = 0
   
   constructor(private cartService: CartService) { 
-    this.cartService.cartItems$.subscribe((cartItems) => {
-      this.cartCount = cartItems.length
+    this.cartService.cart$.subscribe((c) => {
+      this.cartCount = c['items'].length
     })
   }
 }

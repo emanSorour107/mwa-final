@@ -1,11 +1,18 @@
 <div id="farmers-container">
     <div class="d-flex flex-row flex-wrap mt-5 mb-5">
+        <div class="col-12 w-100">
+            <h4>All available farmers:</h4>
+        </div>
         <div *ngFor="let farmer of farmers" class="col-md-4 col-lg-4 pt-2 pb-2">
-            <div class="card">
-                <div class="card-header">
-                    <a [routerLink]="['/farmers', farmer._id]">{{farmer.firstName}} {{farmer.firstName}}</a>
-                </div>
+            <div class="card shadow clickable" [routerLink]="['/farmers', farmer._id]">
+                <img src="https://placeimg.com/300/300/nature?query=1" class="card-img-top" alt="...">
                 <div class="card-body">
+                    <div class="text-center">
+                        <span class="text-center">(Farmer)</span>
+                    </div>
+                    <div>
+                        <h5 class="card-title">{{farmer.firstName}} {{farmer.firstName}}</h5>
+                    </div>
                     <div>
                         <span>Address: {{farmer.address}}</span>
                     </div>
