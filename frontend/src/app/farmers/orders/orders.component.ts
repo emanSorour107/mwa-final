@@ -14,15 +14,6 @@ import {Observable} from 'rxjs';
   providers: [CountryService, DecimalPipe]
 })
 export class OrdersComponent implements OnInit {
-
-//   constructor() { }
-
-  ngOnInit(): void {
-  }
-
-// }
-
-// export class NgbdTableComplete {
   countries$: Observable<Country[]>;
   total$: Observable<number>;
 
@@ -32,8 +23,10 @@ export class OrdersComponent implements OnInit {
     this.countries$ = service.countries$;
     this.total$ = service.total$;
   }
+  ngOnInit(): void {
+  }
 
-  onSort({column, direction}: SortEvent) {
+  onSort({column, direction}: SortEvent): void {
     // resetting other headers
     this.headers.forEach(header => {
       if (header.sortable !== column) {
