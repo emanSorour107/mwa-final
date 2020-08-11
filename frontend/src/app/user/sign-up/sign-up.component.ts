@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm, FormGroup, FormControl, Validators } from '@angular/forms';
-
-import { UserService } from '../../shared/user.service'
-import { User } from 'src/app/shared/user.model';
-import ToastsService from '../../services/toasts.service'
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import ToastsService from '../../services/toasts.service';
+import { UserService } from '../../shared/user.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,16 +12,12 @@ import { Router } from '@angular/router';
 })
 
 export class SignUpComponent implements OnInit {
-  user: User;
-  emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  roles: any[];
   showSucessMessage: boolean;
   serverErrorMessages: string;
 
   signupForm: FormGroup
 
-  constructor(
-    public userService: UserService,
+  constructor(public userService: UserService,
     private router: Router,
     private toastService: ToastsService) {
     this.signupForm = new FormGroup(
@@ -38,39 +32,17 @@ export class SignUpComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.resetForm(null);
-  }
-
-  resetForm(form: NgForm) {
-    if (form != null)
-      form.reset();
-    this.user = {
-      fullName: '',
-      email: '',
-      password: ''
-    }
-
-    if (this.roles)
-      this.roles.map(x => x.selected = false);
   }
 
   onSubmit() {
-
     console.info(this.signupForm.value)
 
     this.userService.registerUser(this.signupForm.value)
-      .subscribe((data) => {
-        if (data['Succeeded'] == true) {
-          this.toastService.generateSuccess('User registration successful');
-          this.router.navigate(['/login'])
-        } else {
-          //this.toastService.generateErorr(error); TODO: make sure error is show up
-        }
+      .subscribe(() => {
+        this.toastService.generateSuccess('User registration successful');
+        this.router.navigate(['/login'])
+      }, (error) => {
+        this.toastService.generateErorr(error);
       });
   }
-
-  updateSelectedRoles(index) {
-    this.roles[index].selected = !this.roles[index].selected;
-  }
-
 }
