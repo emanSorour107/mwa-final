@@ -1,6 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const OrderService = require('../services/orderService');
+const { route } = require('.');
+const Mail = require('../utils/mail');
+
+router.post('/sendmailtest', function (req, res, next) {
+  console.log('ddd')
+  let body = req.body;
+  Mail.sendMail(body, (result)=>{
+    res.json(result)
+  });
+  
+})
 
 router.get('/:id', function (req, res, next) {
   const { id } = req.params
@@ -12,6 +23,7 @@ router.get('/:id', function (req, res, next) {
 
 router.get('/', function (req, res, next) {
   const query = req.query;
+  console.log(101010, query)
   OrderService.getByQuery(query, (err, orders) => {
     res.json(orders)
   })
@@ -29,8 +41,11 @@ router.post('/', async function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
+  
   let data = req.query;
   let {id} = req.params;
+
+  console.log('PUT', id, data)
 
   OrderService.update(id, data, (err, result)=>{
     if (err)
@@ -46,5 +61,7 @@ router.delete('/:id', function(req, res, next) {
   OrderService.remove(id, ()=>{})
   
 });
+
+
 
 module.exports = router;
