@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const OrderService = require('../services/orderService');
-const { route } = require('.');
 const Mail = require('../utils/mail');
 
 router.post('/sendmailtest', function (req, res, next) {
@@ -40,6 +39,7 @@ router.post('/', async function(req, res, next) {
 
 });
 
+// update orders
 router.put('/:id', function(req, res, next) {
   
   let data = req.query;
@@ -55,6 +55,8 @@ router.put('/:id', function(req, res, next) {
   })
   
 });
+
+
 
 router.delete('/:id', function(req, res, next) {
   let id = req.params.id;
