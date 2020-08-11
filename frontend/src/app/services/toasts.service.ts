@@ -13,8 +13,9 @@ export default class ToastsService {
     this.toasts$ = new Subject<[]>()
   }
 
-  generateErorr(message: String): void {
-    this.generateToast({ message, isSuccess: false })
+  generateErorr(message: any): void {
+    const msg = message instanceof Object ? JSON.stringify(message) : message
+    this.generateToast({ message: msg, isSuccess: false })
   }
 
   generateSuccess(message: String): void {

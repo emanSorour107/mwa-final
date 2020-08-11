@@ -13,15 +13,15 @@ export class UserProfileComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
-    this.userService.getUserProfile().subscribe(
-      res => {
-        this.userDetails = res['user'];
-      },
-      err => { 
-        console.log(err);
+    // this.userService.getUserProfile().subscribe(
+    //   res => {
+    //     this.userDetails = res['user'];
+    //   },
+    //   err => { 
+    //     console.log(err);
         
-      }
-    );
+    //   }
+    // );
   }
 
   onLogout(){

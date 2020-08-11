@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment'
 import ToastsService from './toasts.service';
 import { Router } from '@angular/router';
 import CartService from './cart.service';
+import { UserService } from '../shared/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export default class CustomerService {
   constructor(private http: HttpClient,
     private toastService: ToastsService,
     private cartService: CartService,
+    private userService: UserService,
     private router: Router) { }
 
   makeOrder(items: Object[], farmerId: String): void {
