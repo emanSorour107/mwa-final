@@ -1,47 +1,50 @@
-import {Country} from './country';
-import {CountryService} from './country.service';
-import {NgbdSortableHeader, SortEvent} from './sortable.directive';
+import { Component, OnInit } from '@angular/core';
+import OrderService from '../../services/order.service';
 
-import {DecimalPipe} from '@angular/common';
-import {Component, QueryList, ViewChildren, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.scss'],
-  providers: [CountryService, DecimalPipe]
+  styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
+  farmerId: String
+  orders: Object[];
+  filteredOrders: Object[];
 
-//   constructor() { }
+  constructor(private orderService: OrderService, private route: ActivatedRoute) {
+
+    this.route.params.subscribe(params => {
+      this.farmerId = params["id"];
+
+      this.orderService.getOrders(this.farmerId)
+        .subscribe(orders => {
+          console.log(orders);
+          this.orders = orders;
+          this.filteredOrders = orders;
+        })
+    });
+  }
+
 
   ngOnInit(): void {
   }
 
-// }
-
-// export class NgbdTableComplete {
-  countries$: Observable<Country[]>;
-  total$: Observable<number>;
-
-  @ViewChildren(NgbdSortableHeader) headers: QueryList<NgbdSortableHeader>;
-
-  constructor(public service: CountryService) {
-    this.countries$ = service.countries$;
-    this.total$ = service.total$;
+  changeStatus = (order) => {
+    console.log(order);
+    this.orders.forEach(o => {
+      if(o["orderCode"] == order.orderCode) {
+        if(o["status"] === "PENDING") o["status"] = "READY";
+        else if(o["status"] === "READY") o["status"] = "COMPLETE";
+      }
+    })
   }
 
-  onSort({column, direction}: SortEvent) {
-    // resetting other headers
-    this.headers.forEach(header => {
-      if (header.sortable !== column) {
-        header.direction = '';
-      }
-    });
-
-    this.service.sortColumn = column;
-    this.service.sortDirection = direction;
+  sortByStatus = (status : String) => {
+    this.filteredOrders = this.orders.filter(o => o["status"] == status);
+    console.log(this.filteredOrders);
   }
 }
