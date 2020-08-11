@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { User } from './user.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -52,6 +53,10 @@ export class UserService {
     }
     else
       return null;
+  }
+
+  registerUser(user): Observable<Object> {
+    return null
   }
 
   isLoggedIn() {

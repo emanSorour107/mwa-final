@@ -1,15 +1,16 @@
 const mongoose = require('mongoose')
 
 const customerSchema = mongoose.Schema({
-    firstName: String, 
-    lastName: String,
+
     email: String,
-    password: String
+    password: String,
+    uid: String,
+    role: String // FARMER|CUSTOMER
 })
 
 customerSchema.virtual('fullName').get( function() {
     return `${this.firstName} ${this.lastName}`
 });
 
-const Customer = mongoose.model('Customer', customerSchema)
-module.exports = Customer
+const User = mongoose.model('User', customerSchema)
+module.exports = User

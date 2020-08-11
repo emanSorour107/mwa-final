@@ -11,15 +11,12 @@ export class ShoppingCartComponent implements OnInit {
   cart = { total: 0, items: [] }
 
   constructor(private cartService: CartService) {
-    this.cartService.cartItems$
-      .subscribe(items => {
-        this.cart.total = items && items.length > 1 && items
-          .map(item => item['price'] * item['quantity'])
-          .reduce((val, val2) => val + val2) | 0
-        this.cart.items = items
+    this.cartService.cart$
+      .subscribe(c => {
+        Object.assign(this.cart, this.cartService.getCartData(c))
       })
 
-    this.cartService.loadCartItems()
+    this.cartService.loadCart()
   }
 
   ngOnInit(): void {

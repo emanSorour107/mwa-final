@@ -6,9 +6,9 @@ POST http://localhost:3000/customers
 Content-Type: application/json
 
 {
-    "firstName": "Tien Khanh",
+    "firstName": "Tien Khanh 2",
     "lastName": "Nguyen",
-    "email": "tienkhanhnguyen@khanh.com",
+    "email": "khanhnt.tdt@gmail.com",
     "password": "iamsohandsome"
 }
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 {
     "firstName": "Nhan farmer", 
     "lastName": "Ngo",
-    "email": "nhan@gmail.com",
+    "email": "chinhan2k5@gmail.com",
     "password": "jksjksds",
     "tel": "642-344-4343",
     "address": "1200 Verill St",
@@ -33,9 +33,9 @@ Content-Type: application/json
 GET http://localhost:3000/products
 
 ###
-GET http://localhost:3000/products/5f317f83d18db035a489edb6
+GET http://localhost:3000/products/5f31c16b1f34a7138c3e7a9b
 ###
-PUT http://localhost:3000/products/5f317f83d18db035a489edb6
+PUT http://localhost:3000/products/5f31c0e01f34a7138c3e7a9a
 Content-Type: application/json
 
 {
@@ -51,18 +51,18 @@ Content-Type: application/json
 DELETE http://localhost:3000/products/5f32b04e3883f75118fa3d15
 
 ### get products of farmer
-GET http://localhost:3000/farmers/5f30378415280f2cc0ca5818/products
+GET http://localhost:3000/farmers/5f32cf69aac1d435e41265de/products
 
 ### get order of farmer
-GET http://localhost:3000/farmers/5f30378415280f2cc0ca5818/orders
+GET http://localhost:3000/farmers/5f32cf69aac1d435e41265de/orders
 ###
 POST http://localhost:3000/products
 Content-Type: application/json
 
 {
-    "farmer": "5f30378415280f2cc0ca5818",
-    "name": "Fresh Corn 2",
-    "description": "2Picked at the Peak of Perfection: Our love for vegetables began over 100 years ago in Le Sueur, Minnesota",
+    "farmer": "5f32d8e68af07e3a582b9e34",
+    "name": "Fresh Corn",
+    "description": "Picked at the Peak of Perfection: Our love for vegetables began over 100 years ago in Le Sueur, Minnesota",
     "price": 0.25,
     "photoUrl": "assets/USAMap.png", 
     "inStock": 100
@@ -72,9 +72,9 @@ Content-Type: application/json
 GET http://localhost:3000/orders
 
 #### Order by id ######
-GET http://localhost:3000/orders/5f30563e3695673c100d4ce9
+GET http://localhost:3000/orders/5f32d6ea862a8236e0faee62
 
-### Create order ####
+### Create order #### old
 POST http://localhost:3000/orders
 Content-Type: application/json
 
@@ -84,12 +84,46 @@ Content-Type: application/json
     "productIds": ["5f303b3ff2055644d0553b24"]
 }
 
+### Create order #### new ok order
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+    "farmerId": "5f32d8e68af07e3a582b9e34",
+    "customerId": "5f32d8f08af07e3a582b9e35",
+    "orderItems": [
+        {"_id":"5f32cfcfaac1d435e41265e0", "quantity": 2},        
+        {"_id":"5f32d9ba8af07e3a582b9e37", "quantity": 3}
+    ]
+}
+### Test Create order over stock and not exits product
+POST http://localhost:3000/orders
+Content-Type: application/json
+
+{
+    "farmerId": "5f32d8e68af07e3a582b9e34",
+    "customerId": "5f32d6ea862a8236e0faee62",
+    "orderItems": [{"_id":"5f31c16b1f34a7138c3e7a9b", "quantity": 101}, {"_id":"5f31c16b1f34a7138c3e7a9a", "quantity": 101} ]
+}
+
 ### Update order status ###
-PUT http://localhost:3000/orders/5f30563e3695673c100d4ce9?status=READY
+PUT http://localhost:3000/orders/5f32d722862a8236e0faee64?status=READY
 Content-Type: application/json
 
 {}
 
 
 ### get orders of customer
-GET http://localhost:3000/customers/5f30508bf04a4129b4db2a64/orders
+GET http://localhost:3000/customers/5f32d6ea862a8236e0faee62/orders
+
+
+### test mail
+POST http://localhost:3000/orders/sendmailtest
+Content-Type: application/json
+
+{
+    "to": "khanhnt.tdt@gmail.com",
+    "subject" : "give me your money or die",
+    "text": "give me your money or die"
+
+}

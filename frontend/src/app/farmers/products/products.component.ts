@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import FarmerService from '../../services/farmer.service'
 import CartService from 'src/app/services/cart.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -8,14 +9,23 @@ import CartService from 'src/app/services/cart.service';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
+  farmerId: String
+  products: Object[];
 
-  constructor(private farmerService: FarmerService, private cartService: CartService) { }
+  constructor(private farmerService: FarmerService,
+    private route: ActivatedRoute,
+    private cartService: CartService) {
 
-  products: Object[]
+    this.route.params.subscribe(params => {
+      this.farmerId = params["id"];
+
+      this.farmerService.getAllProducts(this.farmerId)
+        .subscribe(products => this.products = products)
+    });
+  }
+
 
   ngOnInit(): void {
-    this.farmerService.getAllProducts('1212')
-      .subscribe(products => this.products = products)
   }
 
   addToCart(product: Object): void {

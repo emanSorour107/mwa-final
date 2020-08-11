@@ -10,11 +10,11 @@ export class FarmersComponent implements OnInit {
 
   constructor(private farmerService: FarmerService) { }
 
-  farmers: []
+  farmers: [];
 
   ngOnInit(): void {
     this.farmerService.getAllFarmers()
-    .subscribe((records) => this.farmers = records)
+    .subscribe((records) => this.farmers = records);
   }
 
 }

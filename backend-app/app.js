@@ -6,22 +6,24 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const cors = require('cors')
-const dotevn = require('dotenv')
-const mongoose = require('mongoose')
+const cors = require('cors');
+const dotevn = require('dotenv');
+const mongoose = require('mongoose');
+const fs = require('fs');
+
 const rtsIndex = require('./routes/index');
 const indexRouter = require('./routes/index');
 const customerRouter = require('./routes/customers')
-const farmerRouter = require('./routes/farmers')
-const productRouter = require('./routes/products')
-const ordersRouter = require('./routes/orders')
+const farmerRouter = require('./routes/farmers');
+const productRouter = require('./routes/products');
+const ordersRouter = require('./routes/orders');
 
-const customerOnly = require('./middlewears/customerOnly')
+const customerOnly = require('./middlewears/customerOnly');
 
 // initiation
-dotevn.config() // Load environment configuration from .env file
+dotevn.config(); // Load environment configuration from .env file
 const app = express();
-
+console.log(999990, process.env.DB_URL)
 // Database
 const mongoOptions = { server: { socketOptions: { keepAlive: 1 } }, useNewUrlParser: true }
 mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017', mongoOptions)
@@ -30,7 +32,11 @@ mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017', mongoOptions
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(logger('dev'));
+// log API access
+app.use(logger('combined',{
+    stream: fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+  }));
+
 app.use(cors());
 //app.use('/api', rtsIndex); TODO: whats this?
 app.use(express.json());
@@ -51,14 +57,12 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    res.locals.message = err.message;
-    res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
-    res.status(err.status || 500)
-        .json(`An error occurs in our server. Please contact system administration for more information. Msg: ${err}`);
+app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.json({
+        message: err.message,
+        error: err
+    });
 });
 
 module.exports = app;

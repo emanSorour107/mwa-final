@@ -1,0 +1,51 @@
+<form>
+    <h2>Orders</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Order Code</th>
+                <th scope="col">Customer</th>
+                <th scope="col">Farmer</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Pickup Time</th>
+                <th scope="col">Rate</th>
+                <th scope="col">
+                    <div ngbDropdown class="d-inline-block">
+                        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Status</button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                            <button ngbDropdownItem (click)="sortByStatus('PENDING')">PENDING</button>
+                            <button ngbDropdownItem (click)="sortByStatus('READY')">READY</button>
+                            <button ngbDropdownItem (click)="sortByStatus('COMPLETE')">COMPLETE</button>
+                        </div>
+                    </div>
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let order of filteredOrders">
+                <th scope="row">{{ order.orderCode }}</th>
+                <td>
+                    {{ order.customer }}
+                </td>
+                <td>
+                    {{ order.farmer }}
+                </td>
+                <td>
+                    {{ order.totalAmount }}
+                </td>
+                <td>
+                    {{ order.pickUpTime | date: 'M/d/yy, h:mm a'}}
+                </td>
+                <td>
+                    {{ order.rate}}
+                </td>
+                <td>
+                    <button class="btn btn-primary" (click)="changeStatus(order)">{{ order.status }}</button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+</form>
