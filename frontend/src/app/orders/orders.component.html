@@ -5,10 +5,8 @@
             <tr>
                 <th scope="col">Order Code</th>
                 <th scope="col">Customer</th>
-                <th scope="col">Farmer</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Pickup Time</th>
-                <th scope="col">Stock</th>
                 <th scope="col">
                     <div ngbDropdown class="d-inline-block">
                         <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Status</button>
@@ -30,19 +28,15 @@
                     {{ order.customer ? order.customer.firstName : null}}
                 </td>
                 <td>
-                    {{ order.farmer }}
-                </td>
-                <td>
-                    {{ order.totalAmount }}
+                    ${{ order.totalAmount | number }}
                 </td>
                 <td>
                     {{ order.pickUpTime | date: 'M/d/yy, h:mm a'}}
                 </td>
                 <td>
-                    {{ order.inStock}}
-                </td>
-                <td>
-                    <button class="btn btn-primary" (click)="changeStatus(order)">{{ order.status }}</button>
+                    <button class="btn btn-outline-info" *ngIf="order.status == 'PENDING'" (click)="changeStatus(order)">{{ order.status }}</button>
+                    <button class="btn btn-outline-warning" *ngIf="order.status == 'READY'"  (click)="changeStatus(order)">{{ order.status }}</button>
+                    <button class="btn btn-outline-success" *ngIf="order.status == 'COMPLETE'" disabled>{{ order.status }}</button>
                 </td>
 
             </tr>

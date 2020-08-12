@@ -126,12 +126,12 @@ let OrderService = {
             console.log('Update without order status')
             Order.update({_id: id}, data, (cb)=>{
                 console.log("Order updated", cb)
-                callback(cb)
+                callback(null, cb)
             })
         }else {
             console.log('Updating order status to' + data.status)
             OrderService.updateStatus(id, data.status, (result)=>{
-                callback(result)
+                callback(null, result)
             })
         }
     },
@@ -155,11 +155,12 @@ let OrderService = {
             
             console.log(`Updated order status from ${currentStatus} to ${newStatus}`)
             if (newStatus=='READY'){
-                let {totalAmount, orderItems, customer:{email:customerEmail}, _id: orderId} = targetOrder;
-
-                console.log(8888, 'order has change to ready', totalAmount, orderItems, customerEmail)
-                console.log("Sending mail to customer"+ customerEmail)
-                OrderMail.sendMailWhenOrderReady(customerEmail, {totalAmount, orderItems, pickUpTime: updateData.pickUpTime, orderId})
+                if (targetOrder.customer) {
+                    let {totalAmount, orderItems, customer:{email:customerEmail}, _id: orderId} = targetOrder;
+                    console.log(8888, 'order has change to ready', totalAmount, orderItems, customerEmail)
+                    console.log("Sending mail to customer"+ customerEmail)
+                    OrderMail.sendMailWhenOrderReady(customerEmail, {totalAmount, orderItems, pickUpTime: updateData.pickUpTime, orderId})
+                }
                 callback({result: "OK"})
             }
         }
