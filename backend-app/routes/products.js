@@ -18,9 +18,18 @@ const uploadHandler = multer({
     })
 });
 
+
+//save new product
 router.post('/', uploadHandler.single('file'), (req, res) => {
   const publicUrl = `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${file_name}`;
-  res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
+  // res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
+  let newProduct =  new Product(req.body)
+    newProduct.photo = publicUrl
+    newProduct.save()
+  res.json({
+    msg: 'New product created',
+    data: newProduct
+  })
 });
 
 //Get all products
@@ -42,21 +51,22 @@ router.get('/:id', async (req, res) => {
   }))
 })
 
-/*
+
 
 //Update product by id
-router.put('/:id', upload.single('file'), async (req, res) => {
+router.put('/:id', uploadHandler.single('file'), async (req, res) => {
+  const publicUrl = `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${file_name}`;
+  console.log(publicUrl)
   const productId = req.params.id
-  photo = `C:/Labs/mwa-final/backend-app/assets/${req.file.originalname}`
-
   const product = await Product.findOne({
     _id: productId
   })
   product.name = req.body.name
   product.description = req.body.description
   product.price = req.body.price
-  product.photo = photo
+  product.photo = publicUrl
   product.inStock = req.body.inStock
+  
   let result = await product.save()
   res.json({
     data: result,
@@ -96,6 +106,6 @@ router.delete('/:id', async (req, res) => {
 
 })
 
-*/
+
 
 module.exports = router;
