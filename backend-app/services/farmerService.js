@@ -12,7 +12,7 @@ let FarmerService = {
         let query = {farmer: farmerId};
         console.log(111,query)
         let result = await Product.find(query);
-        return result;
+        return {data:result};
     },
 
     getOrders : async (farmerId) => {
