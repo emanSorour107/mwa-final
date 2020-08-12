@@ -12,8 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
 
-
-        if (!this.userService.getToken()) {
+        if (true || req.headers.get('noauth')) {
             return next.handle(req.clone());
         } else {
             const clonedreq = req.clone({
