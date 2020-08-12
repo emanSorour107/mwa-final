@@ -19,7 +19,7 @@ export class NavigationComponent implements OnInit {
       this.isCustomer = user['isCustomer']
       this.isLoggedIn = user['isLoggedIn']
       this.isFarmer = user['isFarmer']
-      this.userName = user['firstName'] + ' ' + user['lastName']
+      this.userName = user && user['firstName'] ? (user['firstName'] + ' ' + user['lastName']) : ''
     })
   }
 
