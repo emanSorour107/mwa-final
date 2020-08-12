@@ -25,7 +25,7 @@ export default class CustomerService {
     const formData = {
       farmerId,
       orderItems,
-      customerId: 'aasasasaas', // get current customer id
+      customerId: this.userService.userInfo.uid, // get current customer id
     }
 
     this.http.post(`${environment.apiUrl}/orders`, formData, {})

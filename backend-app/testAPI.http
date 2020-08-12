@@ -51,7 +51,7 @@ Content-Type: application/json
 DELETE http://localhost:3000/products/5f32b04e3883f75118fa3d15
 
 ### get products of farmer
-GET http://localhost:3000/farmers/5f32d8e68af07e3a582b9e34/products
+GET http://localhost:3000/farmers/5f33135635924c2ae81e793b/products
 
 ### get order of farmer
 GET http://localhost:3000/farmers/5f32d8e68af07e3a582b9e34/orders
@@ -60,7 +60,7 @@ POST http://localhost:3000/products
 Content-Type: application/json
 
 {
-    "farmer": "5f32d8e68af07e3a582b9e34",
+    "farmer": "5f33135635924c2ae81e793b",
     "name": "Fresh Corn",
     "description": "Picked at the Peak of Perfection: Our love for vegetables began over 100 years ago in Le Sueur, Minnesota",
     "price": 0.25,

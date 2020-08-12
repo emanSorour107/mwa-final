@@ -118,7 +118,7 @@ let OrderService = {
 
         OrderMail.sendMailWhenCreateOrder(farmerId, customerId, orderId,  newOrderItems, totalAmount)
         
-        return result;
+        return {message:"Order create succeed", result};
     },
 
     update: (id, data, callback) => {

@@ -13,7 +13,7 @@ export class UserService {
   }
 
   userInfo$: Subject<Object>
-  userInfo: Object
+  userInfo: {uid:String}
 
   saveToken(token: string) {
     localStorage.setItem('token', token);

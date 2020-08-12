@@ -19,9 +19,9 @@ const storageMulter = multer.diskStorage(
 ////====  
 //Add product
 router.post('/', upload.single('file'),async (req, res) => {
-   photo = `C:/Labs/mwa-final/backend-app/assets/${req.file.originalname}`
+  //  photo = `C:/Labs/mwa-final/backend-app/assets/${req.file.originalname}`
     let newProduct = await new Product(req.body)
-    newProduct.photo = photo
+    newProduct.photo = 'photo'
     newProduct.save()
   // let newProduct = await new Product(req.body).save()
   res.json({
