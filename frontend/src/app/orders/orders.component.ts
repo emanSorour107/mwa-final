@@ -16,13 +16,12 @@ export class OrdersComponent implements OnInit {
 
     this.route.params.subscribe(params => {
       this.farmerId = params["id"];
-
-      this.orderService.getOrders(this.farmerId)
-        .subscribe(orders => {
-          console.log(orders);
-          this.orders = orders;
-          this.filteredOrders = orders;
-        })
+      this.orderService.getAllOrders()
+      .subscribe(orders => {
+        console.log(orders);
+        this.orders = orders;
+        this.filteredOrders = this.orders;
+      })
     });
   }
 
@@ -30,17 +29,20 @@ export class OrdersComponent implements OnInit {
   }
 
   changeStatus = (order) => {
-    console.log(order);
-    this.orders.forEach(o => {
-      if (o["orderCode"] == order.orderCode) {
-        if (o["status"] === "PENDING") o["status"] = "READY";
-        else if (o["status"] === "READY") o["status"] = "COMPLETE";
+    this.orders.forEach(or => {
+      let status = "";
+      if (or["_id"] == order._id) {
+        if (or["status"] === "PENDING") status = "READY";
+        else if (or["status"] === "READY") status = "COMPLETE";
+        this.orderService.updateOrderStatus(order);
+        or["status"] = status;
       }
     })
   }
 
-  sortByStatus = (status: String) => {
-    this.filteredOrders = this.orders.filter(o => o["status"] == status);
-    console.log(this.filteredOrders);
+  filterByStatus = (status: String) => {
+    if(status === "") this.filteredOrders = this.orders;
+    else this.filteredOrders = this.orders.filter(o => o["status"] == status);
   }
+
 }

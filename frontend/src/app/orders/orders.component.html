@@ -8,14 +8,15 @@
                 <th scope="col">Farmer</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Pickup Time</th>
-                <th scope="col">Rate</th>
+                <th scope="col">Stock</th>
                 <th scope="col">
                     <div ngbDropdown class="d-inline-block">
                         <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Status</button>
                         <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                            <button ngbDropdownItem (click)="sortByStatus('PENDING')">PENDING</button>
-                            <button ngbDropdownItem (click)="sortByStatus('READY')">READY</button>
-                            <button ngbDropdownItem (click)="sortByStatus('COMPLETE')">COMPLETE</button>
+                            <button ngbDropdownItem (click)="filterByStatus('PENDING')">PENDING</button>
+                            <button ngbDropdownItem (click)="filterByStatus('READY')">READY</button>
+                            <button ngbDropdownItem (click)="filterByStatus('COMPLETE')">COMPLETE</button>
+                            <button ngbDropdownItem (click)="filterByStatus('')">SHOW ALL</button>
                         </div>
                     </div>
                 </th>
@@ -24,9 +25,9 @@
         </thead>
         <tbody>
             <tr *ngFor="let order of filteredOrders">
-                <th scope="row">{{ order.orderCode }}</th>
+                <th scope="row">{{ order._id }}</th>
                 <td>
-                    {{ order.customer }}
+                    {{ order.customer ? order.customer.firstName : null}}
                 </td>
                 <td>
                     {{ order.farmer }}
@@ -38,7 +39,7 @@
                     {{ order.pickUpTime | date: 'M/d/yy, h:mm a'}}
                 </td>
                 <td>
-                    {{ order.rate}}
+                    {{ order.inStock}}
                 </td>
                 <td>
                     <button class="btn btn-primary" (click)="changeStatus(order)">{{ order.status }}</button>
