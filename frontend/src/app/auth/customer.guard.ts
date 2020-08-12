@@ -3,18 +3,17 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } fro
 import { UserService } from "../shared/user.service";
 import { Router } from "@angular/router";
 
-
 @Injectable()
-export class AuthGuard implements CanActivate {
+export default class CustomerGuard implements CanActivate {
   constructor(private router: Router, private userService : UserService){}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):  boolean {
       const userInfo = this.userService.getUserInfoForGuard()
-      if (userInfo && userInfo['isLoggedIn']) {
+      if (userInfo['isCustomer']) {
         return true
       } else {
-        this.router.navigateByUrl('/login')
+        this.router.navigateByUrl('/orders')
       }
   }
 }

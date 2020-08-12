@@ -1,9 +1,17 @@
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div>
-        <input placeholder="Email" type="text" [formControl]="loginForm.get('email')">
+        <input placeholder="Email" type="email" [formControl]="loginForm.get('email')">
+        <div>
+            <small *ngIf="loginForm.dirty && !loginForm.get('email').valid" class="text-danger">Email is
+                required</small>
+        </div>
     </div>
     <div>
         <input placeholder="Password" type="password" [formControl]="loginForm.get('password')">
+        <div>
+            <small *ngIf="loginForm.dirty && !loginForm.get('password').valid" class="text-danger">Password is
+                required</small>
+        </div>
     </div>
-    <input type="submit" value="Login" class="btn btn-success">
+    <input type="submit" value="Login" class="btn btn-success" [disabled]="!loginForm.valid">
 </form>
