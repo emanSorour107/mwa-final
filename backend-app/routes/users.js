@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 router.post('/login', (req, res) => {
     const { email, password } = req.body
     UserService.login(email, password, (userInfo) => {
-        const token = jwt.sign(userInfo, process.env.APP_SECRET, { algorithm: process.env.APP_ALGO });
+        const token = jwt.sign(userInfo, process.env.APP_SECRET, { algorithm: process.env.APP_ALGO, expiresIn: 50 * 60000 });
         res.setHeader(process.env.AUTHENTICATION_HEADER, `Bearer ${token}`)
         res.status(200).json("Signed in successfully")
     }, () => {
