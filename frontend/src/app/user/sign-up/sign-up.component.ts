@@ -7,7 +7,7 @@ import { UserService } from '../../shared/user.service';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css'],
+  styleUrls: ['./sign-up.component.scss'],
   providers: [UserService]
 })
 
@@ -22,10 +22,12 @@ export class SignUpComponent implements OnInit {
     private toastService: ToastsService) {
     this.signupForm = new FormGroup(
       {
-        role: new FormControl(''),
+        role: new FormControl('CUSTOMER', [Validators.required]),
         email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
         firstName: new FormControl('', [Validators.required]),
         lastName: new FormControl('', [Validators.required]),
+        phone: new FormControl(''),
+        address: new FormControl(''),
         password: new FormControl('', [Validators.required]),
       }
     )

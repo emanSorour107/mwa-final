@@ -5,16 +5,17 @@ import { Router } from "@angular/router";
 
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export default class FarmerGuard implements CanActivate {
   constructor(private router: Router, private userService : UserService){}
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot):  boolean {
       const userInfo = this.userService.getUserInfoForGuard()
-      if (userInfo && userInfo['isLoggedIn']) {
+      if (userInfo['isFarmer']) {
         return true
       } else {
-        this.router.navigateByUrl('/login')
+        this.router.navigateByUrl('/farmers')
+        return false
       }
   }
 }
