@@ -14,6 +14,7 @@ export class UpdateProductComponent implements OnInit {
   updateForm: FormGroup;
   id;
   product;
+  file;
 
   constructor(private productService: ProductsService, private formBuilder: FormBuilder, private http: HttpClient, private route: ActivatedRoute) {
 
@@ -34,14 +35,21 @@ export class UpdateProductComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  onFileSelect(event) {
+    const file = event.target.files[0];
+    this.file = file;
+  }
+
+ 
   onSubmit(): void {
-    const name = this.updateForm.getRawValue().name
-    const description = this.updateForm.getRawValue().description
-    const price = this.updateForm.getRawValue().price
-    const photo = this.updateForm.getRawValue().photo
-    const inStock = this.updateForm.getRawValue().inStock
-    const product = { name: name, description: description, price: price, photo: photo, inStock: inStock }
-    this.productService.updateProduct(this.id, product)
+    const formData = new FormData()
+    formData.append('file', this.file)
+    formData.append('name', this.updateForm.getRawValue().name)
+    formData.append('description', this.updateForm.getRawValue().description)
+    formData.append('price', this.updateForm.getRawValue().price)
+    formData.append('inStock', this.updateForm.getRawValue().inStock)
+    // const product = { name: name, description: description, price: price, photo: photo, inStock: inStock }
+    this.productService.updateProduct(this.id, formData)
   }
 
   async getProduct() {

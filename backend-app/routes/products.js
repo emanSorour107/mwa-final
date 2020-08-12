@@ -2,39 +2,26 @@ const express = require('express');
 const ProductService = require('../services/productService');
 const Product = require('../models/product');
 const router = express.Router();
-const multer = require('multer')
-const {storage} = require('@google-cloud/storage')
+const path = require('path');
+const multer = require('multer');
 
-const storageMulter = multer.diskStorage(
-  {
-      destination: 'assets/',
-      filename: function ( req, file, cb ) {
-        cb( null, file.originalname);
-      }
+const multerGoogleStorage = require("multer-google-storage");
+
+var file_name;
+
+const uploadHandler = multer({
+    storage: multerGoogleStorage.storageEngine({
+      filename: function(req, file, cb){
+          file_name = Date.now() + '_' + file.originalname;
+          cb(null, file_name);
+        }
     })
- const upload = multer( { storage: storageMulter } );
-
-  
-
-////====  
-//Add product
-router.post('/', upload.single('file'),async (req, res) => {
-   photo = `C:/Labs/mwa-final/backend-app/assets/${req.file.originalname}`
-    let newProduct = await new Product(req.body)
-    newProduct.photo = photo
-    newProduct.save()
-  // let newProduct = await new Product(req.body).save()
-  res.json({
-    msg: 'New product created',
-    data: newProduct
-  })
 });
 
-//Add product image
-// router.post('/file', upload.single('file'),async (req, res) => {
-//   const file = req.file
-//   res.send
-// });
+router.post('/', uploadHandler.single('file'), (req, res) => {
+  const publicUrl = `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${file_name}`;
+  res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
+});
 
 //Get all products
 router.get('/', (req, res) => {
@@ -55,9 +42,12 @@ router.get('/:id', async (req, res) => {
   }))
 })
 
+/*
+
 //Update product by id
-router.put('/:id', async (req, res) => {
+router.put('/:id', upload.single('file'), async (req, res) => {
   const productId = req.params.id
+  photo = `C:/Labs/mwa-final/backend-app/assets/${req.file.originalname}`
 
   const product = await Product.findOne({
     _id: productId
@@ -65,7 +55,7 @@ router.put('/:id', async (req, res) => {
   product.name = req.body.name
   product.description = req.body.description
   product.price = req.body.price
-  product.photo = req.body.photo
+  product.photo = photo
   product.inStock = req.body.inStock
   let result = await product.save()
   res.json({
@@ -106,6 +96,6 @@ router.delete('/:id', async (req, res) => {
 
 })
 
-
+*/
 
 module.exports = router;
