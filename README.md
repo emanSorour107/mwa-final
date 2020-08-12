@@ -42,8 +42,6 @@ Farmer = {
     user: Object,
     firstName: String, 
     lastName: String,
-    email: String,
-    password: String,
     tel: String,
     address: String,
     reputation: Integer
@@ -51,7 +49,7 @@ Farmer = {
 
 Product = {
     _id: Object,
-    farmer: Ref,
+    farmer: {type: Schema.Types.ObjectId, ref: 'Farmer'},
     name: String,
     description: String,
     price: Double,
@@ -62,11 +60,11 @@ Product = {
 
 Order = {
     _id: Object,
-    customer: Ref,
-    farmer: Ref,
+    customer: {type: Schema.Types.ObjectId, ref: 'Customer'},,
+    farmer: {type: Schema.Types.ObjectId, ref: 'Farmer'},,
     orderCode: String,
-    createdate: Date,
-    productList: [Product],
+    createDate: { type: Date, default: Date.now },
+    orderItems: [Product],
     status: (PENDING || READY || COMPLETE),
     totalAmount: Double,
     pickUpTime: DateTime,
@@ -78,8 +76,6 @@ Customer = {
     user: Object,
     firstName: String, 
     lastName: String,
-    email: String,
-    password: String,
     tel: String,
     address: String
 }
@@ -89,6 +85,7 @@ User = {
     email: String,
     password: String,
     role: (ADMIN|FARMER|CUSTOMER),
+    uid: String, // FarmerId or CustomerId
     status: (ACTIVE||DEACTIVE)
 }
 ```
