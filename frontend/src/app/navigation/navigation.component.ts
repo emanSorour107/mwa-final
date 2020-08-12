@@ -12,12 +12,14 @@ export class NavigationComponent implements OnInit {
   isLoggedIn: false
   isCustomer: false
   isFarmer: false
+  userName: String
 
   constructor(private userService: UserService, private router: Router) {
     this.userService.userInfo$.subscribe(user => {
       this.isCustomer = user['isCustomer']
       this.isLoggedIn = user['isLoggedIn']
       this.isFarmer = user['isFarmer']
+      this.userName = user['firstName'] + ' ' + user['lastName']
     })
   }
 

@@ -17,8 +17,8 @@ export class SignInComponent implements OnInit {
     private toastService: ToastsService) {
     this.loginForm = new FormGroup(
       {
-        email: new FormControl('john@gmail.com', Validators.compose([Validators.required, Validators.email])),
-        password: new FormControl('123456', [Validators.required]),
+        email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
+        password: new FormControl('', [Validators.required]),
       }
     )
   }
@@ -31,7 +31,11 @@ export class SignInComponent implements OnInit {
     this.userService.login(email, password, () => {
       this.router.navigateByUrl('/orders')
     }, (error) => {
-      this.toastService.generateErorr("Unable to signin at this moment. Please try again later")
+      if (error.status == 401) {
+        this.toastService.generateErorr(error['error'])
+      } else {
+        this.toastService.generateErorr("Unable to signin at this moment. Please try again later")
+      }
     });
   }
 
