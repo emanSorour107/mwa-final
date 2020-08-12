@@ -9,7 +9,8 @@ const orderSchema = Schema({
     createDate: { type: Date, default: Date.now },
     orderItems: [model('Product').schema],
     // orderItems: {type: Schema.Types.ObjectId, ref: 'OrderItem'},
-    status: String, //(PENDING || READY || COMPLETE)
+    status: { type: String, index: true }, //(PENDING || READY || COMPLETE)
+    
     totalAmount: Number,
     pickUpTime: Date,
     rate: String//(null||EXCELLENT||GOOD||BAD)

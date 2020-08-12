@@ -1,16 +1,39 @@
-<p>List page</p>
-<div>
-  <nav> <a [routerLink]="['addProduct']" > Add</a> </nav>
+<h4>Selling products</h4>
+<div class="d-flex justify-content-end mb-3 mr-2">
+ <span [routerLink]="['addProduct']" class="btn btn-outline-primary"><i class="fa fa-plus mr-2"></i>Add</span>
 </div>
 
-      <table *ngFor="let product of products">
-        <tr>
-          <td><img src={{product.photo}} alt="Product_img"></td>
-          <td>{{product.name}}</td>
-          <td>{{product.description}}</td>
-          <td>{{product.price}}</td>
-          <td>{{product.inStock}}</td>
-          <button [routerLink]="['/products', 'updateProduct', product._id]"></button>
-          <button (click)="deleteProduct(product._id)"></button>
-        </tr>
-      </table>
+<table id="products_table" class="table table-hover table-responsive">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th class="text-right">Price</th>
+      <th class="text-center">In Stock</th>
+      <th class="text-center">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products">
+      <td>
+        <div class="d-flex flex-row">
+          <div class="col-md-2 pl-0">
+            <img src="C:/Labs/mwa-final/backend-app/download/USAMap.png">
+          </div>
+          <div>
+            <h5>{{product.name}}</h5>
+          </div>
+        </div>
+      </td>
+      <td class="text-right">${{product.price | number}}</td>
+      <td class="text-center">
+        {{product.inStock}}
+      </td>
+      <td>
+        <div class="d-flex flex-column">
+          <button [routerLink]="['/products', 'updateProduct', product._id]" class="btn btn-outline-info mb-1 shadow">Update</button>
+          <button (click)="deleteProduct(product._id)" class="btn btn-outline-danger shadow">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

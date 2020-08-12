@@ -7,11 +7,14 @@
 
     <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="isCustomer">
                 <a class="nav-link" href="#" [routerLink]="['/farmers']">Farmers</a>
+            </li>
+            <li class="nav-item" *ngIf="isFarmer">
+                <a class="nav-link" href="#" [routerLink]="['/orders']">Orders</a>
+            </li>
+            <li class="nav-item" *ngIf="isFarmer">
+                <a class="nav-link" href="#" [routerLink]="['/products']">Products Management</a>
             </li>
             <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown"
@@ -23,7 +26,16 @@
                 </div>
             </li> -->
         </ul>
-        <div class="mr-4">
+        <div class="mr-2">
+            <span class="text-white">{{userName}}</span>
+        </div>
+        <div *ngIf="isLoggedIn">
+            <button class="btn btn-secondary" (click)="logout()">Logout</button>
+        </div>
+        <div *ngIf="!isLoggedIn">
+            <button class="btn btn-secondary" [routerLink]="['/login']">Login</button>
+        </div>
+        <div class="mr-4" *ngIf="!isFarmer">
             <app-cart></app-cart>
         </div>
     </div>

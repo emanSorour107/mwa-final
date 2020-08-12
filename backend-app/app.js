@@ -23,7 +23,15 @@ const customerOnly = require('./middlewears/customerOnly');
 // initiation
 const app = express();
 // Database
-const mongoOptions = { server: { socketOptions: { keepAlive: 1 } }, useNewUrlParser: true }
+const mongoOptions = { 
+    server: { socketOptions: { keepAlive: 1 } }, 
+    useNewUrlParser: true, 
+    // retry to connect for 60 times
+    reconnectTries: 60,
+    // wait 1 second before retrying
+    reconnectInterval: 1000
+
+}
 mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017', mongoOptions)
 
 // view engine setup

@@ -19,5 +19,7 @@
         <label for="inStock">In stock</label>
         <input type="text" class="form-control" id="inStock" formControlName="inStock">
       </div>
-    <button type="submit" class="btn btn-primary" [disabled]="!productForm.valid">Submit</button>
+    <div class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-primary" [disabled]="!productForm.valid">Submit</button>
+    </div>
   </form>

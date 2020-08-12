@@ -30,7 +30,8 @@ const UserService = {
             } else {
                 successCB({ email: user.email, firstName: user.firstName, lastName: user.lastName, role: user.role, uid: user.uid })
             }
-
+        } else {
+            errorCB()
         }
     }
 }
