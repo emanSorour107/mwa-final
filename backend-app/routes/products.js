@@ -1,31 +1,27 @@
 const express = require('express');
-const ProductService = require('../services/productService');
 const Product = require('../models/product');
 const router = express.Router();
-const path = require('path');
 const multer = require('multer');
-
 const multerGoogleStorage = require("multer-google-storage");
 
-var file_name;
+let file_name;
 
 const uploadHandler = multer({
-    storage: multerGoogleStorage.storageEngine({
-      filename: function(req, file, cb){
-          file_name = Date.now() + '_' + file.originalname;
-          cb(null, file_name);
-        }
-    })
+  storage: multerGoogleStorage.storageEngine({
+    filename: function (req, file, cb) {
+      file_name = Date.now() + '_' + file.originalname;
+      cb(null, file_name);
+    }
+  })
 });
-
 
 //save new product
 router.post('/', uploadHandler.single('file'), (req, res) => {
   const publicUrl = `https://storage.googleapis.com/${process.env.GCS_BUCKET}/${file_name}`;
   // res.status(200).send(`Success!\n Image uploaded to ${publicUrl}`);
-  let newProduct =  new Product(req.body)
-    newProduct.photo = publicUrl
-    newProduct.save()
+  let newProduct = new Product(req.body)
+  newProduct.photo = publicUrl
+  newProduct.save()
   res.json({
     msg: 'New product created',
     data: newProduct
@@ -43,14 +39,12 @@ router.get('/', (req, res) => {
 //Get product by Id
 router.get('/:id', async (req, res) => {
   const productId = req.params.id
-
   const product = await Product.findOne({
     _id: productId
   }, (err, data) => res.json({
     data: data
   }))
 })
-
 
 
 //Update product by id
@@ -66,7 +60,7 @@ router.put('/:id', uploadHandler.single('file'), async (req, res) => {
   product.price = req.body.price
   product.photo = publicUrl
   product.inStock = req.body.inStock
-  
+
   let result = await product.save()
   res.json({
     data: result,
@@ -75,15 +69,10 @@ router.put('/:id', uploadHandler.single('file'), async (req, res) => {
 
 });
 
-
-
 // Delete a product
 router.delete('/:id', async (req, res) => {
   const productId = req.params.id;
-
-  var query = {
-    _id: productId
-  }
+  let query = { _id: productId }
   const productCount = await Product.countDocuments(query)
 
   if (productCount == 1) {
@@ -102,10 +91,6 @@ router.delete('/:id', async (req, res) => {
 
     })
   }
-
-
 })
-
-
 
 module.exports = router;
