@@ -5,7 +5,7 @@
 
       <table *ngFor="let product of products">
         <tr>
-          <td><img src="C:/Labs/mwa-final/backend-app/download/USAMap.png" alt="Product_img"></td>
+          <td><img src={{product.photo}} alt="Product_img"></td>
           <td>{{product.name}}</td>
           <td>{{product.description}}</td>
           <td>{{product.price}}</td>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ProductsService } from '../products.service';
+import { Router , Route} from '@angular/router';
+
 
 @Component({
   selector: 'add-product',
@@ -12,7 +14,7 @@ export class AddProductComponent {
   productForm: FormGroup;
   file: string;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private productService: ProductsService) {
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private productService: ProductsService, private router : Router) {
 
     this.productForm = formBuilder.group({
       name: ['', [Validators.required]],
@@ -38,6 +40,7 @@ export class AddProductComponent {
     formData.append('inStock', this.productForm.getRawValue().inStock)
     
     this.productService.postProduct(formData)
+    // this.router.navigate(['/products'])
   }
 
 
