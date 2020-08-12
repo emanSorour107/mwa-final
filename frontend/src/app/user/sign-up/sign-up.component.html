@@ -1,25 +1,50 @@
-<form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="mt-3">
+    <div>
+        <div class="d-flex align-items-center justify-content-center">
+            <label for="farmer" class="mb-0 mr-2">Farmer</label>
+            <input type="radio" name="role" id="farmer" value="FARMER" class="mr-3"
+                [formControl]="signupForm.get('role')">
+            <label for="customer" class="mb-0 mr-2">Customer</label>
+            <input type="radio" name="role" id="customer" value="CUSTOMER" [formControl]="signupForm.get('role')">
+        </div>
+        <small *ngIf="signupForm.dirty && !signupForm.get('role').valid" class="text-danger">Please select user
+            type</small>
+    </div>
     <div>
         <input placeholder="First Name" type="text" [formControl]="signupForm.get('firstName')">
+        <div>
+            <small *ngIf="signupForm.dirty && !signupForm.get('firstName').valid" class="text-danger">First Name is
+                required</small>
+        </div>
     </div>
-
     <div>
         <input placeholder="Last Name" type="text" [formControl]="signupForm.get('lastName')">
+        <div>
+            <small *ngIf="signupForm.dirty && !signupForm.get('lastName').valid" class="text-danger">Last Name is
+                required</small>
+        </div>
     </div>
     <div>
-        <input placeholder="Email" type="text" [formControl]="signupForm.get('email')">
+        <input placeholder="Phone" type="text" [formControl]="signupForm.get('phone')" *ngIf="signupForm.get('role').value == 'FARMER'">
+    </div>
+    <div>
+        <input placeholder="Address" type="text" [formControl]="signupForm.get('address')" *ngIf="signupForm.get('role').value == 'FARMER'">
+    </div>
+    <div>
+        <input placeholder="Email" type="email" [formControl]="signupForm.get('email')">
+        <div>
+            <small *ngIf="signupForm.dirty && !signupForm.get('email').valid" class="text-danger">Email is
+                required</small>
+        </div>
     </div>
     <div>
         <input placeholder="Password" type="password" [formControl]="signupForm.get('password')">
+        <div>
+            <small *ngIf="signupForm.dirty && !signupForm.get('password').valid" class="text-danger">Password is
+                required</small>
+        </div>
     </div>
-
-    <div>
-        <label for="farmer">Farmer</label>
-        <input type="radio" name="role" id="farmer" value="FARMER" class="mr-3" [formControl]="signupForm.get('role')">
-        <label for="customer ">Customer</label>
-        <input type="radio" name="role" id="customer" value="CUSTOMER" [formControl]="signupForm.get('role')">
-    </div>
-    <input type="submit" value="Sign Up">
+    <input type="submit" value="Sign Up" [disabled]="!signupForm.valid">
 </form>
 
 <!-- Success message -->

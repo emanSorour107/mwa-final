@@ -51,10 +51,10 @@ Content-Type: application/json
 DELETE http://localhost:3000/products/5f32b04e3883f75118fa3d15
 
 ### get products of farmer
-GET http://localhost:3000/farmers/5f32cf69aac1d435e41265de/products
+GET http://localhost:3000/farmers/5f32d8e68af07e3a582b9e34/products
 
 ### get order of farmer
-GET http://localhost:3000/farmers/5f32cf69aac1d435e41265de/orders
+GET http://localhost:3000/farmers/5f32d8e68af07e3a582b9e34/orders
 ###
 POST http://localhost:3000/products
 Content-Type: application/json
@@ -72,7 +72,7 @@ Content-Type: application/json
 GET http://localhost:3000/orders
 
 #### Order by id ######
-GET http://localhost:3000/orders/5f32d6ea862a8236e0faee62
+GET http://localhost:3000/orders/5f32d722862a8236e0faee64
 
 ### Create order #### old
 POST http://localhost:3000/orders
@@ -107,14 +107,22 @@ Content-Type: application/json
 }
 
 ### Update order status ###
-PUT http://localhost:3000/orders/5f32d722862a8236e0faee64?status=READY
+PUT http://localhost:3000/orders/5f32da9d35aed20f682d3f27?status=PENDING
 Content-Type: application/json
 
 {}
 
+### to ready
+PUT http://localhost:3000/orders/5f32da9d35aed20f682d3f27?status=READY
+Content-Type: application/json
+
+{}
+### get order 
+GET http://localhost:3000/orders/5f32da9d35aed20f682d3f27
+
 
 ### get orders of customer
-GET http://localhost:3000/customers/5f32d6ea862a8236e0faee62/orders
+GET http://localhost:3000/customers/5f32d8f08af07e3a582b9e35/orders
 
 
 ### test mail

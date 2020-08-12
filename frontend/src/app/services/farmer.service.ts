@@ -12,7 +12,7 @@ export default class FarmerService {
   constructor(private http: HttpClient, private userService: UserService) { }
 
   getAllProducts = (farmerId: String) : Observable<Object> => {
-    return this.http.get(`${environment.apiUrl}/farmers/${farmerId}`)
+    return this.http.get(`${environment.apiUrl}/farmers/${farmerId}/products`)
   }
 
   getAllFarmers = () : Observable<Object> => {

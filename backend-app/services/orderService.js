@@ -1,69 +1,28 @@
-require('dotenv').config();
-
 const Product = require("../models/product");
 const Order = require("../models/order");
-const Mail = require("../utils/mail");
-const Farmer = require("../models/farmer");
-const Customer = require('../models/customer');
+const OrderMail = require("../utils/orderMail");
+
+const DateUtil = require("../utils/date")
 
 let getByQuery = async (query, callback) => {
     let result = await Order.find(query, callback).populate('products').populate('customer');
     return result;
 };
 
-let updateProductStock = async (productToUpdate, stockAfter) =>{
-
-};
-
-let sendMailWhenCreateOrder = async (farmerId, customerId, orderId, purchaseList, totalAmount) => {
-    let farmer = await Farmer.findById(farmerId).select({email:1}).exec()
-    
-    let customer = await Customer.findById(customerId).select({email:1}).exec()
-
-    console.log('Debug email', farmerId, customerId, farmer.email, customer.email)
-    // return
-    
-    const BR = "\r\n";
-
-    console.log(111, typeof purchaseList, purchaseList)
-    let productListText = purchaseList.map(p=>{
-        return `\t\t${p.name}: \t\t ${p.inStock}`
-    }).join (BR)
-    
-    let orderDetail = ` ${productListText} \r\nTotal: \t\t ${totalAmount}`
-
-    let farmerEmail = farmer.email
-    // for Farmer
-    if (!farmerEmail){
-        console.log('Missing email farmer', farmerId, farmerEmail)
-    }else{
+let updateProductStock = async(productIds, stockAfter) =>{
+    let saveQuery = [];
+    productIds.forEach(id=>{
+        saveQuery.push(Product.findByIdAndUpdate(id, {inStock: stockAfter[id]}))
         
-        let text = `You have new order: ${process.env.FRONTEND_URL}/farmers/orders/${orderId} ${BR}${orderDetail}`
-        let mailData = {
-            to: farmerEmail,
-            subject: 'Have a new order',
-            text: text
-        }
-        Mail.sendMail(mailData, (result)=>{
-            console.log("Farmer Send mail OK")
-        })
-    }
-    // to customer
-    let customerEmail = customer.email
-    if (!customerEmail ){
-        console.log('Missing email', customerId, customerEmail)
-    }else{
-        text = `Your new order: ${process.env.FRONTEND_URL}/customer/orders/${orderId} ${BR}${orderDetail}`
-        mailData = {
-            to: customerEmail,
-            subject: 'You have just created an order',
-            text: text
-        }
-        Mail.sendMail(mailData, (result)=>{
-            console.log("Customer Send mail OK")
-        })
-    }
+    })
+
+    return Promise.all(saveQuery)
+    
+    
+    
 };
+
+
 
 let OrderService = {
 
@@ -109,10 +68,12 @@ let OrderService = {
         let stockAfter = {}
         productItems.forEach((item)=>{
             console.log(9, item.inStock, item._id, itemsMap[item._id])
+
             if (item.inStock < itemsMap[item._id])
                 shortageStock.push({_id: item._id, inStock: item.inStock})
             
-                stockAfter[item._id] = item.inStock - itemsMap[item._id];
+            stockAfter[item._id] = item.inStock - itemsMap[item._id];
+            item.inStock -= itemsMap[item._id];
         })
 
         console.log(99, shortageStock, itemsMap)
@@ -126,10 +87,7 @@ let OrderService = {
             return sum + cur;
         })
         
-
-        // update order stock
-        let result = await updateProductStock(productItems, stockAfter);
-
+       
         // create order
         let newOrderItems = []
         // create orderItems
@@ -150,14 +108,66 @@ let OrderService = {
 
         result = await order.save();
         console.log('Create order', result)
+
+        // update order stock
+        let result2 = await updateProductStock(productIds, stockAfter);
+        console.log('Stock updated', result2)
+        
+
         let orderId = result._id;
-        sendMailWhenCreateOrder(farmerId, customerId, orderId,  newOrderItems, totalAmount)
+
+        OrderMail.sendMailWhenCreateOrder(farmerId, customerId, orderId,  newOrderItems, totalAmount)
         
         return result;
     },
 
     update: (id, data, callback) => {
-        Order.update({_id: id}, data, callback);
+        if (!data.status) {
+            console.log('Update without order status')
+            Order.update({_id: id}, data, (cb)=>{
+                console.log("Order updated", cb)
+                callback(cb)
+            })
+        }else {
+            console.log('Updating order status to' + data.status)
+            OrderService.updateStatus(id, data.status, (result)=>{
+                callback(result)
+            })
+        }
+    },
+
+    updateStatus: async (id, newStatus, callback)=> {
+        let targetOrder = await Order.findById(id).populate('customer').exec()
+        let currentStatus = targetOrder.status;
+        console.log('Update order status', currentStatus)
+        if (currentStatus==newStatus){
+            callback({error:"NG", message: `Same status already ${currentStatus}`})
+        }else{
+            let updateData = {status: newStatus}
+
+            if (newStatus=='READY'){
+                updateData.pickUpTime = DateUtil.dateAfterDays(1)
+            }
+            
+            let ret = await Order.update({_id: id}, updateData, (cb)=>{
+                callback({result:"OK", message: `Has change from ${currentStatus} to ${newStatus}`})
+            })
+            
+            console.log(`Updated order status from ${currentStatus} to ${newStatus}`)
+            if (newStatus=='READY'){
+                let {totalAmount, orderItems, customer:{email:customerEmail}, _id: orderId} = targetOrder;
+
+                console.log(8888, 'order has change to ready', totalAmount, orderItems, customerEmail)
+                console.log("Sending mail to customer"+ customerEmail)
+                OrderMail.sendMailWhenOrderReady(customerEmail, {totalAmount, orderItems, pickUpTime: updateData.pickUpTime, orderId})
+                callback({result: "OK"})
+            }
+        }
+
+    },
+
+    rateOrder: async (id, rate) => {
+
     },
 
     remove: (id, callback) => {
